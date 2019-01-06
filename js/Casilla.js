@@ -10,10 +10,7 @@ function Casilla(tipo){
     this.descubierto = false;
     this.deshabilitado = false;
     
-    if(tipo == 'mina')
-        valorMostrar = '*';
-    else
-        valorMostrar = '0';
+    this.valorMostrar = '0';
 
     this.convertirMina = function () {
         this.tipo = 'mina';

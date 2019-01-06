@@ -14,17 +14,34 @@ function Buscaminas(ancho, alto, numeroMinas){
         this.mostrar();
     };
 
-    // To-Do: Muestra el campo de minas por consola
     this.mostrar = function (){
         console.log('------- Buscaminas by Sojo -----------');
         for(x=0;x<this.ancho;x++){
             linea = x+"-\t|";
-            for(y=0;y<this.alto;y++)
-                linea += this.getCasilla(x,y).valorMostrar + " ";
+            for(y=0;y<this.alto;y++){
+                let casilla = this.getCasilla(x,y)
+                if(casilla.descubierto === false)
+                    linea += '# '
+                else
+                    linea += casilla.valorMostrar + " ";
+            }
             linea += "| -"+x;
             console.log(linea);
         }
-        // console.table(this.tablero);
+    };
+
+
+    this.mostrarDebug = function (){
+        console.log('------- Buscaminas by Sojo -----------');
+        for(x=0;x<this.ancho;x++){
+            linea = x+"-\t|";
+            for(y=0;y<this.alto;y++){
+                let casilla = this.getCasilla(x,y)
+                linea += casilla.valorMostrar + " ";
+            }
+            linea += "| -"+x;
+            console.log(linea);
+        }
     };
 
     /**
@@ -34,6 +51,15 @@ function Buscaminas(ancho, alto, numeroMinas){
      * En caso de no quedar casillas por levantar se indica que se ha ganado el juego.
      */
     this.picar = function (x,y){
+        let casilla = this.getCasilla(x,y);
+        if(casilla.deshabilitado === true)
+            return;
+        casilla.descubierto = true;
+
+        if(casilla.tipo === 'mina')
+            throw new Error('¡Has perdido! Has tocado una mina');
+        
+        this.mostrar();
 
     };
 
@@ -53,6 +79,9 @@ function Buscaminas(ancho, alto, numeroMinas){
 
     };
 
+    /**
+     * Genera el tablero que es una tabla que está contenida en el objeto.
+     */
     this.generarTablero = function(ancho, alto){
         let tablero = [];
         for(let i=0;i<ancho;i++){
@@ -64,7 +93,10 @@ function Buscaminas(ancho, alto, numeroMinas){
     }
 
 
-    // this.ponerMinas(this.tablero, this.numeroMinas);
+    
+    /**
+     * ponerMinas(tablero, numeroMinas) coloca el número de minas indicado en el tablero.
+     */
     this.ponerMinas = function (tablero, numeroMinas){
         let minasColocadas = 0;
         do {
@@ -76,14 +108,19 @@ function Buscaminas(ancho, alto, numeroMinas){
         } while(minasColocadas < numeroMinas);
     }
 
+    /**
+     * Devuelve una casilla aleatoria dentro del tablero
+     */
     this.getCasillaAleatoria = function () {
         let x = getRandomInt(0, this.ancho);
         let y = getRandomInt(0, this.alto);
         return this.tablero[x][y];
     };
 
-    // función para poner los números
-    this.ponerNumeros = function (tablero){
+    /**
+     * Da el valor correspondiente a cada casilla
+     */
+    this.ponerNumeros = function (){
         // console.log(tablero);
         for (let ancho = 0; ancho < this.ancho; ancho++) {
             for (let alto = 0; alto < this.alto; alto++) {
