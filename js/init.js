@@ -7,8 +7,10 @@ console.log("   * dificil");
 let buscaminas;
 
 function iniciar(dificultad) {
-    if (dificultad == 'facil')
+    if (dificultad == 'facil'){
         buscaminas = new Buscaminas(8, 8, 10);
+        buscaminas.init();
+    }
     else if (dificultad == 'medio')
         buscaminas = new Buscaminas(16, 16, 40);
     else if (dificultad == 'dificil')
