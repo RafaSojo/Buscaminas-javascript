@@ -1,4 +1,4 @@
-#Buscaminas javascript
+# Buscaminas javascript
 
 Buscaminas en Javascript realizado para la asignatura de DWEC para el ciclo de DAW.
 
