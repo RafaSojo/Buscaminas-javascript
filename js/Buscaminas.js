@@ -14,16 +14,21 @@ function Buscaminas(ancho, alto, numeroMinas) {
         this.mostrar();
     };
 
+    // Para mostrar el tablero
     this.mostrar = function () {
         console.log('------- Buscaminas by Sojo -----------');
         for (x = 0; x < this.ancho; x++) {
+            // console.log(1);
             linea = x + "-\t|";
             for (y = 0; y < this.alto; y++) {
-                let casilla = this.getCasilla(x, y)
-                if (casilla.descubierto === false)
-                    linea += '# '
-                else
-                    linea += casilla.valorMostrar + " ";
+                let casilla = this.getCasilla(x, y);
+                linea += casilla.getValor() + ' ';
+                // if (casilla.bandera === true)
+                //     linea += '🚩 ';
+                // else if (casilla.descubierto === false)
+                //     linea += '#️⃣ '
+                // else
+                //     linea += casilla.valorMostrar + " ";
             }
             linea += "| -" + x;
             console.log(linea);
@@ -51,16 +56,18 @@ function Buscaminas(ancho, alto, numeroMinas) {
      * En caso de picar una minas se indica que se ha perdido el juego. 
      * En caso de no quedar casillas por levantar se indica que se ha ganado el juego.
      */
-    this.picar = function (x, y) {
+    this.picar = function (y, x) {
 
         // Primero obtenemos la casilla que se ha picado
         let casilla = this.getCasilla(x, y);
         // this.picarCasilla(casilla,x,y);
 
         // Se comprueba si está deshabilitada o si está la bandera puesta
-        if (casilla.deshabilitado === true || casilla.bandera === true || casilla.descubierto === true)
+        if (casilla.deshabilitado === true || casilla.bandera === true || casilla.descubierto === true){
+            console.error('La casilla esa deshabilitada, marcada o ya descubierta.');
             return;
-        console.log('Descubirnedo casilla..');
+        }
+        console.log('Descubriendo casilla..');
         casilla.descubierto = true;
 
         // Si has tocado una mina, pierdes
@@ -83,7 +90,7 @@ function Buscaminas(ancho, alto, numeroMinas) {
     // };
 
     this.descubrirRecursivo = function (x, y) {
-        console.log("entra en recursivo");
+        // console.log("entra en recursivo");
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
                 try {
@@ -103,8 +110,10 @@ function Buscaminas(ancho, alto, numeroMinas) {
 
 
     // To-Do: marca con una bandera la casilla (x, y) y muestra el campo de minas actualizado.
-    this.marcar = function (x, y) {
-
+    this.marcar = function (y, x) {
+        this.getCasilla(x, y).setBandera();
+        // casilla.bandera = true;
+        this.mostrar();
     };
 
 
@@ -186,7 +195,7 @@ function Buscaminas(ancho, alto, numeroMinas) {
 
 
 
-    
+
 
 } // Fin objeto buscaminas
 
