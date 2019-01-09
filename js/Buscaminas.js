@@ -23,12 +23,6 @@ function Buscaminas(ancho, alto, numeroMinas) {
             for (y = 0; y < this.alto; y++) {
                 let casilla = this.getCasilla(x, y);
                 linea += casilla.getValor() + ' ';
-                // if (casilla.bandera === true)
-                //     linea += '🚩 ';
-                // else if (casilla.descubierto === false)
-                //     linea += '#️⃣ '
-                // else
-                //     linea += casilla.valorMostrar + " ";
             }
             linea += "| -" + x;
             console.log(linea);
@@ -51,80 +45,108 @@ function Buscaminas(ancho, alto, numeroMinas) {
     };
 
     /**
-     * To-Do:
      * .picar(x, y): pica en la casilla (x, y) y muestra el campo de minas actualizado. 
      * En caso de picar una minas se indica que se ha perdido el juego. 
      * En caso de no quedar casillas por levantar se indica que se ha ganado el juego.
      */
-    this.picar = function (y, x) {
+    this.picar = function (x, y) {
 
         // Primero obtenemos la casilla que se ha picado
-        let casilla = this.getCasilla(x, y);
-        // this.picarCasilla(casilla,x,y);
+        try {
 
-        // Se comprueba si está deshabilitada o si está la bandera puesta
-        if (casilla.deshabilitado === true || casilla.bandera === true || casilla.descubierto === true){
-            console.error('La casilla esa deshabilitada, marcada o ya descubierta.');
-            return;
+            let casilla = this.getCasilla(x, y);
+            // this.picarCasilla(casilla,x,y);
+
+            // Se comprueba si está deshabilitada o si está la bandera puesta
+            if (casilla.deshabilitado === true || casilla.bandera === true || casilla.descubierto === true) {
+                console.error('La casilla está deshabilitada, marcada o ya descubierta. - picar');
+                return;
+            }
+            casilla.descubierto = true;
+
+            // Si has tocado una mina, pierdes
+            if (casilla.tipo === 'mina')
+                throw new Error('¡Has perdido! Has tocado una mina');
+
+            // Si el valor de la mina que tienes es '0', se descubren recursivamente
+            if (parseInt(casilla.valorMostrar) == 0) {
+                this.descubrirRecursivo(x, y);
+            }
+
+
+        } catch (error) {
+            console.error(error);
         }
-        console.log('Descubriendo casilla..');
-        casilla.descubierto = true;
-
-        // Si has tocado una mina, pierdes
-        if (casilla.tipo === 'mina')
-            throw new Error('¡Has perdido! Has tocado una mina');
-
-        // Si el valor de la mina que tienes es '0', se descubren recursivamente
-        if (casilla.valorMostrar == '0') {
-            this.descubrirRecursivo(x, y);
-        }
-
-        // console.log('x: '+x+ " - y: "+y);
-
-        this.mostrar();
 
     };
 
-    // this.picarCasilla = function (casilla, x, y) {
-
-    // };
 
     this.descubrirRecursivo = function (x, y) {
-        // console.log("entra en recursivo");
+        console.log('Recursivo de -> x:' + x + ' - y:' + y);
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
                 try {
                     let casilla = this.getCasilla((parseInt(x) + i), (parseInt(y) + j));
-                    // console.log(casilla);
-                    if (casilla != undefined && casilla.tipo != 'mina' && casilla.descubierto == false && casilla.deshabilitado == false)
+                    if (casilla != undefined && casilla.descubierto === false && casilla.deshabilitado == false)
                         this.picar((parseInt(x) + i), (parseInt(y) + j));
                 } catch {
                     continue;
                 }
-
             }
         }
-
     }
 
 
-
-    // To-Do: marca con una bandera la casilla (x, y) y muestra el campo de minas actualizado.
-    this.marcar = function (y, x) {
-        this.getCasilla(x, y).setBandera();
-        // casilla.bandera = true;
-        this.mostrar();
+    // marca con una bandera la casilla (x, y) y muestra el campo de minas actualizado.
+    this.marcar = function (x, y) {
+        try {
+            this.getCasilla(x, y).setBandera();
+            this.mostrar();
+        } catch (error) {
+            console.error(error);
+        }
     };
 
 
     /**
-     * To-Do:
      * intenta destapar las casillas colindantes, sólo si el número de banderas se corresponden con las que indica la casilla. Entonces muestra el campo de minas actualizado.
      * En caso de estar las banderas equivocadas se indica que se ha perdido el juego.
      */
     this.despejar = function (x, y) {
 
+        let casilla = this.getCasilla(x, y);
+        if (casilla.descubierto === false || casilla.bandera === true) {
+            console.log(casilla);
+            console.error('La casilla tiene no está descubierta o tiene una bandera. - despejar');
+            return;
+        }
+
+        let numeroBanderasAlrededor = this.getNumeroBanderasAlrededor(x, y);
+        if (casilla.valorMostrar == numeroBanderasAlrededor)
+            this.descubrirRecursivo(x, y);
+        else
+            console.log('No coincide el número de banderas con el número de minas alrededor.');
     };
+
+    /**
+     * Devuelve el número de banderas (casillas marcadas) alrededor de una casilla
+     */
+    this.getNumeroBanderasAlrededor = function (x, y) {
+        let numeroBanderas = 0;
+        for (let i = -1; i <= 1; i++) {
+            for (let j = -1; j <= 1; j++) {
+                try {
+                    let casilla = this.tablero[(x + i)][(y + j)];
+                    if (casilla != null && casilla.bandera === true && casilla != undefined)
+                        numeroBanderas++;
+                } catch {
+                    continue;
+                }
+            }
+        }
+        return numeroBanderas;
+    };
+
 
     /**
      * Genera el tablero que es una tabla que está contenida en el objeto.
@@ -168,15 +190,14 @@ function Buscaminas(ancho, alto, numeroMinas) {
      * Da el valor correspondiente a cada casilla
      */
     this.ponerNumeros = function () {
-        // console.log(tablero);
         for (let ancho = 0; ancho < this.ancho; ancho++) {
             for (let alto = 0; alto < this.alto; alto++) {
-                // let casilla = tablero[ancho][alto];
                 let casilla = this.getCasilla(ancho, alto);
                 if (casilla.tipo == 'mina')
                     continue;
                 let numeroMinas = 0;
-                // ahora vamos recorriendo todas las casillas de alrededor y vemos si son minas para colocar el numero
+
+                // Recorremos todas las casillas de alrededor y vemos si son minas para colocar el numero
                 for (let i = -1; i <= 1; i++) {
                     for (let j = -1; j <= 1; j++) {
                         try {
@@ -191,6 +212,17 @@ function Buscaminas(ancho, alto, numeroMinas) {
                 casilla.valorMostrar = numeroMinas;
             }
         }
+    };
+
+
+    /**
+     * Descubre todo el tablero y lo muestra
+     */
+    this.descubrirTablero = function () {
+        for (let ancho = 0; ancho < this.ancho; ancho++)
+            for (let alto = 0; alto < this.alto; alto++)
+                this.getCasilla(ancho, alto).descubierto = true;
+        this.mostrar();
     };
 
 
@@ -220,14 +252,3 @@ Buscaminas.prototype.getCasilla = function (x, y) {
         throw new Error("La posición seleccionada no es válida");
     }
 }
-
-
-// Buscaminas.prototype.toString = function buscaminastoString() {
-//     return this.valorMostrar;
-// }
-
-
-// Perro.prototype.toString = function perroToString() {
-//     var retorno = "Perro " + this.nombre + " es " + this.sexo + " " + this.color + " " + this.criadero;
-//     return retorno;
-//   }

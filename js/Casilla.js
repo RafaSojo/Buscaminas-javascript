@@ -18,10 +18,10 @@ function Casilla(tipo) {
     };
 
     this.getValor = function () {
-        if(this.descubierto == false && this.bandera == true)
-        return '🚩';
+        if (this.descubierto == false && this.bandera == true)
+            return '🚩';
         else if (this.descubierto == false)
-            return '#️⃣';
+            return '⬛';
         else if (this.valorMostrar == '0')
             return '0️⃣';
         else if (this.valorMostrar == '1')
@@ -45,11 +45,11 @@ function Casilla(tipo) {
         else if (this.tipo == 'mina')
             return '💣';
         else
-            return 'defaultValue';
+            return valorMostrar;
     };
 
-    this.setBandera = function (){
-        if(this.bandera)
+    this.setBandera = function () {
+        if (this.bandera)
             this.bandera = false;
         else
             this.bandera = true;

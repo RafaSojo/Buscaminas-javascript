@@ -15,8 +15,10 @@ function iniciar(dificultad) {
         buscaminas = new Buscaminas(16, 16, 40);
     else if (dificultad == 'dificil')
         buscaminas = new Buscaminas(16, 30, 99);
-    else
+    else{
+        console.log('No has elegido una opción válida');
         return;
+    }
 
 
     console.log("Ahora tienes el objeto buscaminas listo");
