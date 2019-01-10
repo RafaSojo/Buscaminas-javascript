@@ -17,16 +17,23 @@ function Buscaminas(ancho, alto, numeroMinas) {
     // Para mostrar el tablero
     this.mostrar = function () {
         console.log('------- Buscaminas by Sojo -----------');
+        // console.log('\t|1\t2\t3\t4');
+        let pintar = "\t|\t0\t";
+        for(let i=1;i<this.alto;i++)
+            pintar += i+'\t';
+        pintar += ' |';
+        console.log(pintar);
         for (x = 0; x < this.ancho; x++) {
             // console.log(1);
-            linea = x + "-\t|";
+            linea = x + "\t|\t";
             for (y = 0; y < this.alto; y++) {
                 let casilla = this.getCasilla(x, y);
-                linea += casilla.getValor() + ' ';
+                linea += casilla.getValor() + '\t';
             }
-            linea += "| -" + x;
+            linea += " | " + x;
             console.log(linea);
         }
+        console.log(pintar);
     };
 
 
@@ -56,6 +63,7 @@ function Buscaminas(ancho, alto, numeroMinas) {
 
             let casilla = this.getCasilla(x, y);
             // this.picarCasilla(casilla,x,y);
+            
 
             // Se comprueba si está deshabilitada o si está la bandera puesta
             if (casilla.deshabilitado === true || casilla.bandera === true || casilla.descubierto === true) {
@@ -66,18 +74,23 @@ function Buscaminas(ancho, alto, numeroMinas) {
 
             // Si has tocado una mina, pierdes
             if (casilla.tipo === 'mina')
-                throw new Error('¡Has perdido! Has tocado una mina');
-
+                this.perder();
             // Si el valor de la mina que tienes es '0', se descubren recursivamente
             if (parseInt(casilla.valorMostrar) == 0) {
                 this.descubrirRecursivo(x, y);
             }
-
-
         } catch (error) {
             console.error(error);
         }
 
+
+    };
+
+    this.perder = function (){
+        this.deshabilitarTablero();
+        this.descubrirTablero();
+        this.mostrar();
+        throw new Error('¡Has perdido! Has tocado una mina');
     };
 
 
@@ -222,7 +235,14 @@ function Buscaminas(ancho, alto, numeroMinas) {
         for (let ancho = 0; ancho < this.ancho; ancho++)
             for (let alto = 0; alto < this.alto; alto++)
                 this.getCasilla(ancho, alto).descubierto = true;
-        this.mostrar();
+        // this.mostrar();
+    };
+
+    this.deshabilitarTablero = function () {
+        for (let ancho = 0; ancho < this.ancho; ancho++)
+            for (let alto = 0; alto < this.alto; alto++)
+                this.getCasilla(ancho, alto).deshabilitado = true;
+        // this.mostrar();
     };
 
 
