@@ -76,9 +76,14 @@
          * .picar(x, y): pica en la casilla (x, y) y muestra el campo de minas actualizado. 
          * En caso de picar una minas se indica que se ha perdido el juego. 
          * En caso de no quedar casillas por levantar se indica que se ha ganado el juego.
+         * Es un wrapper para picarCasilla. Así sólo se muestra una sola vez el tablero.
          */
         this.picar = function (x, y) {
+            this.picarCasilla(x, y);
+            this.mostrar();
+        };
 
+        this.picarCasilla = function (x, y){
             // Primero obtenemos la casilla que se ha picado
             try {
 
@@ -103,8 +108,6 @@
             } catch (error) {
                 console.error(error);
             }
-
-
         };
 
         /**
@@ -128,7 +131,7 @@
                     try {
                         let casilla = this.getCasilla((parseInt(x) + i), (parseInt(y) + j));
                         if (casilla != undefined && casilla.descubierto === false && casilla.deshabilitado == false)
-                            this.picar((parseInt(x) + i), (parseInt(y) + j));
+                            this.picarCasilla((parseInt(x) + i), (parseInt(y) + j));
                     } catch {
                         continue;
                     }
