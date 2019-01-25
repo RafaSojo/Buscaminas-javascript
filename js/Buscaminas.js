@@ -163,7 +163,6 @@
                 console.error('La casilla tiene no está descubierta o tiene una bandera.');
                 return;
             }
-
             let numeroBanderasAlrededor = this.getNumeroBanderasAlrededor(x, y);
             if (casilla.valorMostrar == numeroBanderasAlrededor)
                 this.descubrirRecursivo(x, y);
@@ -239,7 +238,6 @@
                     if (casilla.tipo == 'mina')
                         continue;
                     let numeroMinas = 0;
-
                     // Recorremos todas las casillas de alrededor y vemos si son minas para colocar el numero
                     for (let i = -1; i <= 1; i++) {
                         for (let j = -1; j <= 1; j++) {
@@ -265,14 +263,12 @@
             for (let ancho = 0; ancho < this.ancho; ancho++)
                 for (let alto = 0; alto < this.alto; alto++)
                     this.getCasilla(ancho, alto).descubierto = true;
-            // this.mostrar();
         };
 
         this.deshabilitarTablero = function () {
             for (let ancho = 0; ancho < this.ancho; ancho++)
                 for (let alto = 0; alto < this.alto; alto++)
                     this.getCasilla(ancho, alto).deshabilitado = true;
-            // this.mostrar();
         };
 
 
