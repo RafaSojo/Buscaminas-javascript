@@ -1,3 +1,6 @@
+{
+    
+
 console.log("¡Hola! Para iniciar el buscaminas manualmente puedes instanciar el objeto Buscaminas.");
 console.log("Si quieres crear uno automáticamente usa la función iniciar() y le pasas como argumento la dificultad:");
 console.log("   * facil");
@@ -33,4 +36,6 @@ function iniciar(dificultad) {
 // Fuente -> https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Math/random
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
+}
+
 }
