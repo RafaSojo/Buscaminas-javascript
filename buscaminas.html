@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta author="Rafael Sojo">
-    <title>Buscaminas</title>
+    <title>Buscaminas jQuery by Rafa Sojo</title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="js/Casilla.js"></script>
     <script src="js/buscaminas2.js"></script>
@@ -17,21 +17,21 @@
 
 <body>
     <main>
-            <h1>Buscaminas jQuery</h1>
+            <h1>Buscaminas con jQuery</h1>
     
             <div class="entornoJuego">
                 <header>
-                    <div class="Reloj">00:00:00</div>
-                    <div class="Banderas"><span id="numBanderas">0</span><span><i class="fas fa-flag"></i></span></div>
-                    <div class="Dificultad">
-                        <select name="dificultad" id="dificultad">
+                    <div class="tiempo"><span id="tiempoTranscurrido">00:00</span> <i class="fas fa-clock"></i></div>
+                    <div class="banderas"><span id="numBanderas">0</span><span><i class="fas fa-flag"></i></span></div>
+                    <div class="dificultad">
+                        <select name="dificultad" id="select-dificultad">
                             <option value="1">Facil</option>
                             <option value="2">Medio</option>
                             <option value="3">Dificil</option>
                         </select>
                     </div>
                 </header>
-                <div class="tableroJuego"></div>
+                <div class="tableroJuego Tablero" id="tableroJuego"></div>
             </div>
             <div class="Reinicia"><i class="fas fa-undo-alt"></i></div>
     </main>

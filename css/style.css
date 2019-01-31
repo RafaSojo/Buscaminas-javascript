@@ -30,7 +30,7 @@ p {
     padding: 5px 15px;
     top: 0.25px;
     align-items: center;
-    border-bottom: 1px solid black;
+    /* border-bottom: 1px solid black; */
     z-index: 99;
 }
 
@@ -46,12 +46,12 @@ p {
     left: 40px;
 }
 
-.Banderas {
+.banderas {
     margin: 40px;
     font-size: 20px;
 }
 
-.Banderas span {
+.banderas span {
     margin: 10px;
 }
 
@@ -64,7 +64,7 @@ p {
 }
 
 .Tablero {
-    width: 100%;
+    width: auto;
     margin: 20px auto;
     position: relative;
 }
@@ -81,6 +81,12 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    /* align-self: stretch; */
+
+/*  Tamaño Casilla  */
+    height: 40px;
+    width: 40px;
 }
 
 .casillaBuscamina span {

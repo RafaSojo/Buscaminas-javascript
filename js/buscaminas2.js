@@ -18,17 +18,17 @@ let buscaminas = (function () {
 
     function init(dificultad = 1) {
         switch (dificultad) {
-            case 2:
+            case '2':
                 filas = 16;
                 columnas = 16;
                 numeroMinas = 30;
                 break;
-            case 3:
+            case '3':
                 filas = 30;
                 columnas = 30;
                 numeroMinas = 99;
                 break;
-            case 1:
+            case '1':
             default:
                 filas = 8;
                 columnas = 8;
@@ -81,12 +81,16 @@ let buscaminas = (function () {
 
     }
 
+    function picarCasilla(casilla){
+
+    }
+
 
     return {
         init: init,
         mostrar: mostrarTableroJuego,
         cambios: mostrarCambios,
-        //picar: picarCasilla,
+        picar: picarCasilla,
       //  marcar: marcarCasilla,
         //despejar: despejarCasilla
     }
