@@ -31,7 +31,13 @@
         for(let i = 0;i<alto;i++){
             tableroArrayDom[i] = [];
             for(let x = 0;x<ancho;x++){
-                tableroArrayDom[i].push($('<div class="casillaBuscamina"><span><span></div>').click(picarCasilla));
+                tableroArrayDom[i].push(
+                    $('<div class="casillaBuscamina"><span><span></div>')
+                    .click(picarCasilla)
+                    .contextmenu(colocarBandera)
+                    .data('x',x)
+                    .data('y',i)
+                    );
                 divContenedor.append(tableroArrayDom[i][x]);
             }
         }
@@ -42,11 +48,28 @@
 
 
     function picarCasilla(){
-        let casilla = this;
-        console.log(casilla);
-        buscaminas.picar(casilla);
+        let $casilla = $(this);
+        // console.log(casilla);
+
+        let y = $casilla.data('y');
+        let x = $casilla.data('x');
+
+        buscaminas.picar(x,y);
+
+        mostrarCambios();
     }
 
+    function colocarBandera(evento){
+        evento.preventDefault();
+        let casilla = this;
+        buscaminas.marcar(casilla);
+        console.log(casilla);
+    }
+
+
+    function mostrarCambios(){
+        let arrayCambios = buscaminas.cambios();
+    }
 
 
     
