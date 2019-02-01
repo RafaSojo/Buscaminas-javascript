@@ -12,7 +12,7 @@ let buscaminas = (function () {
     let filas;
     let columnas;
     let casillasRestantes;
-    let arrayCambios = [];
+    let arrayCambios;
     // let columnasCampoMinas;
     // let filasCampoMinas;
     // let arrayLevantadas;
@@ -42,12 +42,14 @@ let buscaminas = (function () {
         //numLibres = numFilas * numComlumnas - numMinas;
         //perdida = false;
         //return campoMinas;
+        arrayCambios = [];
     }
 
 
+    /**
+     * Asigna a cada casilla el valor según el número de minas que hay alrededor
+     */
     function colocarNumeros() {
- 
-
         // console.log('entra colocar numeros');
         for (let x = 0; x < filas; x++) {
             for (let y = 0; y < columnas; y++) {
@@ -73,6 +75,11 @@ let buscaminas = (function () {
         }
     }
 
+    /**
+     * Crea un tablero en función del tamaño pasado.
+     * @param {Número de filas} filas 
+     * @param {Número de columnas} columnas 
+     */
     function crearTablero(filas, columnas) {
         let matriz = [];
         for (let i = 0; i < filas; i++) {
@@ -133,7 +140,9 @@ let buscaminas = (function () {
     // Devuelve un array con las coordenadas de las casillas afectadas
     function mostrarCambios() {
         // Devolvemos el array a la vez que lo reseteamos
-        return arrayCambios.splice(0);
+        let varTemp = arrayCambios ;
+        arrayCambios = [];
+        return varTemp;
     }
 
     // Función cuando picas una casilla
@@ -151,7 +160,9 @@ let buscaminas = (function () {
             casilla.descubierto = true;
 
             // Añadimos la casilla al array de cambios
-            arrayCambios.push({ 'x': x, 'y': y });
+            arrayCambios.push(x+"-"+y);
+            // arrayCambios = [];
+            console.log('log picarCasilla '+arrayCambios);
 
 
             // Si has tocado una mina, pierdes
@@ -173,7 +184,7 @@ let buscaminas = (function () {
     }
 
     function descubrirRecursivo(x, y) {
-        console.log('Recursivo de -> x:' + x + ' - y:' + y);
+        // console.log('Recursivo de -> x:' + x + ' - y:' + y);
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
                 try {
