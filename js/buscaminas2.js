@@ -212,6 +212,7 @@ let buscaminas = (function () {
         cambios: mostrarCambios,
         picar: picarCasilla,
         marcar: marcarCasilla,
+        casilla: getCasilla
 
         //despejar: despejarCasilla
     }

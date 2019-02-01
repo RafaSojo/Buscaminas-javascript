@@ -32,7 +32,7 @@
             tableroArrayDom[i] = [];
             for(let x = 0;x<ancho;x++){
                 tableroArrayDom[i].push(
-                    $('<div class="casillaBuscamina" id="'+x+'-'+i+'"></div>')
+                    $('<div class="casillaBuscamina" id="'+x+'-'+i+'">'+buscaminas.casilla(x,i).valorMostrar+'</div>')
                     .click(picarCasilla)
                     .contextmenu(colocarBandera)
                     .data('x',x)
