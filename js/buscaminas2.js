@@ -52,12 +52,12 @@ let buscaminas = (function () {
         boolPartidaPerdida = false;
         boolPartidaGanada = false;
 
-        partidaTerminada  = false;
+        partidaTerminada = false;
         arrayCambios = [];
     }
 
-    function comprobarPartidaTerminada(){
-        if(partidaTerminada)
+    function comprobarPartidaTerminada() {
+        if (partidaTerminada)
             throw new Error('La partida está acabada');
     }
 
@@ -130,11 +130,11 @@ let buscaminas = (function () {
     function colocarMinas(numeroMinas) {
         let minasColocadas = 0;
         do {
-            let [casilla,x,y] = getCasillaAleatoria(tablero);
+            let [casilla, y, x] = getCasillaAleatoria(tablero);
             if (casilla.tipo === "normal") {
                 casilla.convertirMina();
                 minasColocadas++;
-                arrayMinas.push([y+"-"+x,casilla]);
+                arrayMinas.push([y + "-" + x, casilla]);
             }
         } while (minasColocadas < numeroMinas);
 
@@ -146,7 +146,7 @@ let buscaminas = (function () {
     function getCasillaAleatoria() {
         let x = getRandomInt(0, filas);
         let y = getRandomInt(0, columnas);
-        return [tablero[x][y],x,y];
+        return [tablero[x][y], x, y];
     }
 
     //Devuelve una matriz con todo el contenido del tablero
@@ -157,7 +157,7 @@ let buscaminas = (function () {
     // Devuelve un array con las coordenadas de las casillas afectadas
     function mostrarCambios() {
         // Devolvemos el array a la vez que lo reseteamos
-        let varTemp = arrayCambios ;
+        let varTemp = arrayCambios;
         arrayCambios = [];
         return varTemp;
     }
@@ -179,8 +179,8 @@ let buscaminas = (function () {
             casilla.descubierto = true;
 
             // Añadimos la casilla al array de cambios
-            arrayCambios.push([x+"-"+y,casilla]);
-            console.log('log picarCasilla '+arrayCambios);
+            arrayCambios.push([x + "-" + y, casilla]);
+            // console.log('log picarCasilla ' + arrayCambios);
 
 
             // Si has tocado una mina, pierdes
@@ -202,19 +202,11 @@ let buscaminas = (function () {
         boolPartidaPerdida = true;
 
         arrayCambios = getMinas();
-        
+
     }
 
 
-    function getMinas(){
-        // let arrayMinas = [];
-        // for (let i = 0; i < filas; i++) {
-        //     for (let j = 0; j < columnas; j++) {
-        //         casilla = getCasilla(j,i);
-        //         if(casilla.tipo == 'mina')
-        //             arrayMinas.push([j+"-"+i,casilla]);
-        //     }
-        // }
+    function getMinas() {
         return arrayMinas;
     }
 
@@ -243,7 +235,7 @@ let buscaminas = (function () {
 
     }
 
-    function isPartidaPerdida(){
+    function isPartidaPerdida() {
         return boolPartidaPerdida;
     }
 

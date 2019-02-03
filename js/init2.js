@@ -2,12 +2,12 @@
     let tableroArrayDom;
     let $tableroDom;
 
-    $(()=>{
+    $(() => {
         $('#select-dificultad').change(iniciaJuego).change();
     });
 
 
-    function iniciaJuego(){
+    function iniciaJuego() {
         let dificultad = this.value;
         // console.log(dificultad);
         buscaminas.init(dificultad);
@@ -18,7 +18,7 @@
     }
 
     // Pinta por primera vez el tablero
-    function iniciarTablero(){
+    function iniciarTablero() {
         // console.log(buscaminas);
         let alto = buscaminas.mostrar().length;
         // console.log(alto);
@@ -28,16 +28,16 @@
         // console.log(tableroArrayDom);
 
         let divContenedor = $('<div></div>');
-        for(let i = 0;i<alto;i++){
+        for (let i = 0; i < alto; i++) {
             tableroArrayDom[i] = [];
-            for(let x = 0;x<ancho;x++){
+            for (let x = 0; x < ancho; x++) {
                 tableroArrayDom[i].push(
-                    $('<div class="casillaBuscamina" id="'+x+'-'+i+'"></div>')
-                    .click(picarCasilla)
-                    .contextmenu(colocarBandera)
-                    .data('x',x)
-                    .data('y',i)
-                    );
+                    $('<div class="casillaBuscamina" id="' + x + '-' + i + '"></div>')
+                        .click(picarCasilla)
+                        .contextmenu(colocarBandera)
+                        .data('x', x)
+                        .data('y', i)
+                );
                 divContenedor.append(tableroArrayDom[i][x]);
             }
         }
@@ -47,25 +47,25 @@
     }
 
 
-    function picarCasilla(){
+    function picarCasilla() {
         let $casilla = $(this);
         // console.log(casilla);
 
         let y = $casilla.data('y');
         let x = $casilla.data('x');
 
-        buscaminas.picar(x,y);
+        buscaminas.picar(x, y);
 
         mostrarCambios();
-        console.log(buscaminas);
+        // console.log(buscaminas);
 
-        if(buscaminas.partidaPerdida())
+        if (buscaminas.partidaPerdida())
             perder();
-        if(buscaminas.partidaGanada())
+        if (buscaminas.partidaGanada())
             ganar();
     }
 
-    function colocarBandera(evento){
+    function colocarBandera(evento) {
         evento.preventDefault();
         let casilla = this;
         buscaminas.marcar(casilla);
@@ -73,33 +73,39 @@
     }
 
 
-    function mostrarCambios(){
+    function mostrarCambios() {
         let arrayCambios = buscaminas.cambios();
-        console.log(arrayCambios);
-        for(let i=0;i<arrayCambios.length;i++){
-            $casilla = $('#'+arrayCambios[i][0]);
+        // console.log(arrayCambios);
+        for (let i = 0; i < arrayCambios.length; i++) {
+            $casilla = $('#' + arrayCambios[i][0]);
             let casillaDatos = arrayCambios[i][1];
             $casilla.html(casillaDatos.valorMostrar);
 
-            $casilla.addClass('casillaDescubierta').effect( "bounce", "slow" );
-            if(casillaDatos.tipo === 'mina')
+            $casilla.addClass('casillaDescubierta').effect("bounce", "slow");
+            if (casillaDatos.tipo === 'mina')
                 $casilla.addClass('mina');
             // console.log(arrayCambios[i][1]);
             // debugger;
         }
-        
-    }
-
-    function ganar(){
 
     }
 
+    function ganar() {
 
-    function perder(){
+    }
+
+
+    function perder() {
+        // Mostramos mensaje de perder
         alert('has perdido');
+
+        // Desactivamos el tablero
+        $('.casillaBuscamina').unbind('click');
+
+        // Mostramos las minas
         mostrarCambios();
     }
 
 
-    
+
 }

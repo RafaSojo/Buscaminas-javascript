@@ -4,14 +4,11 @@ p {
     text-align: center;
 }
 
-
-
 #undo {
     position: absolute;
     font-size: 3em;
     top: 20px;
     left: 50px;
-
 }
 
 .entornoJuego {
@@ -81,10 +78,8 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-
     /* align-self: stretch; */
-
-/*  Tamaño Casilla  */
+    /*  Tamaño Casilla  */
     height: 40px;
     width: 40px;
 }
@@ -92,7 +87,6 @@ p {
 .casillaBuscamina span {
     font-size: 20px;
 }
-
 
 .Reinicia {
     display: none;
@@ -117,16 +111,17 @@ p {
     font-size: 50px;
 }
 
-.casillaDescubierta{
+.casillaDescubierta {
     background-color: white;
     border: 1px solid black;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: 1s; 
+    transition: 1s;
 }
-.casillaMarcada{
+
+.casillaMarcada {
     background-color: Red;
     border: 1px solid white;
     text-align: center;
@@ -135,8 +130,6 @@ p {
     align-items: center;
 }
 
-
-
-.mina{
+.mina {
     background-color: brown;
 }
