@@ -20,9 +20,9 @@
     // Pinta por primera vez el tablero
     function iniciarTablero() {
         // console.log(buscaminas);
-        let alto = buscaminas.mostrar().length;
-        // console.log(alto);
-        let ancho = buscaminas.mostrar()[0].length
+        let alto = buscaminas.filas();
+        // console.log(buscaminas);
+        let ancho = buscaminas.columnas();
 
         tableroArrayDom = new Array(alto);
         // console.log(tableroArrayDom);

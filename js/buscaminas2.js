@@ -231,7 +231,7 @@ let buscaminas = (function () {
 
     }
 
-    function marcarCasilla(casilla) {
+    function marcarCasilla(x, y) {
 
     }
 
@@ -243,9 +243,19 @@ let buscaminas = (function () {
         return boolPartidaGanada;
     }
 
+    function getFilas(){
+        return filas;
+    }
+
+    function getColumnas(){
+        return columnas;
+    }
+
     return {
         init: init,
-        mostrar: mostrarTableroJuego,
+        filas: getFilas,
+        columnas: getColumnas,
+        // mostrar: mostrarTableroJuego,
         cambios: mostrarCambios,
         picar: picarCasilla,
         marcar: marcarCasilla,
