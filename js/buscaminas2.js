@@ -15,6 +15,7 @@ let buscaminas = (function () {
     let arrayCambios;
     let boolPartidaPerdida;
     let boolPartidaGanada;
+    let arrayMinas;
     // let columnasCampoMinas;
     // let filasCampoMinas;
     // let arrayLevantadas;
@@ -38,6 +39,9 @@ let buscaminas = (function () {
                 numeroMinas = 10;
                 break;
         }
+
+        arrayMinas = [];
+
         crearTablero(filas, columnas);
         colocarMinas(numeroMinas);
         colocarNumeros();
@@ -126,10 +130,11 @@ let buscaminas = (function () {
     function colocarMinas(numeroMinas) {
         let minasColocadas = 0;
         do {
-            let casilla = getCasillaAleatoria(tablero);
+            let [casilla,x,y] = getCasillaAleatoria(tablero);
             if (casilla.tipo === "normal") {
                 casilla.convertirMina();
                 minasColocadas++;
+                arrayMinas.push([y+"-"+x,casilla]);
             }
         } while (minasColocadas < numeroMinas);
 
@@ -141,7 +146,7 @@ let buscaminas = (function () {
     function getCasillaAleatoria() {
         let x = getRandomInt(0, filas);
         let y = getRandomInt(0, columnas);
-        return tablero[x][y];
+        return [tablero[x][y],x,y];
     }
 
     //Devuelve una matriz con todo el contenido del tablero
@@ -202,14 +207,14 @@ let buscaminas = (function () {
 
 
     function getMinas(){
-        let arrayMinas = [];
-        for (let i = 0; i < filas; i++) {
-            for (let j = 0; j < columnas; j++) {
-                casilla = getCasilla(j,i);
-                if(casilla.tipo == 'mina')
-                    arrayMinas.push([j+"-"+i,casilla]);
-            }
-        }
+        // let arrayMinas = [];
+        // for (let i = 0; i < filas; i++) {
+        //     for (let j = 0; j < columnas; j++) {
+        //         casilla = getCasilla(j,i);
+        //         if(casilla.tipo == 'mina')
+        //             arrayMinas.push([j+"-"+i,casilla]);
+        //     }
+        // }
         return arrayMinas;
     }
 
