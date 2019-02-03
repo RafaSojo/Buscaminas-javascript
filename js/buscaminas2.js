@@ -7,12 +7,14 @@ function getRandomInt(min, max) {
 let buscaminas = (function () {
 
     let tablero;
-    let partidaTerminada = false;
+    let partidaTerminada;
     let numeroMinas;
     let filas;
     let columnas;
     let casillasRestantes;
     let arrayCambios;
+    let boolPartidaPerdida;
+    let boolPartidaGanada;
     // let columnasCampoMinas;
     // let filasCampoMinas;
     // let arrayLevantadas;
@@ -42,6 +44,11 @@ let buscaminas = (function () {
         //numLibres = numFilas * numComlumnas - numMinas;
         //perdida = false;
         //return campoMinas;
+
+        boolPartidaPerdida = false;
+        boolPartidaGanada = false;
+
+        partidaTerminada  = false;
         arrayCambios = [];
     }
 
@@ -168,7 +175,6 @@ let buscaminas = (function () {
 
             // Añadimos la casilla al array de cambios
             arrayCambios.push([x+"-"+y,casilla]);
-            // arrayCambios = [];
             console.log('log picarCasilla '+arrayCambios);
 
 
@@ -188,6 +194,23 @@ let buscaminas = (function () {
 
     function perder() {
         partidaTerminada = true;
+        boolPartidaPerdida = true;
+
+        arrayCambios = getMinas();
+        
+    }
+
+
+    function getMinas(){
+        let arrayMinas = [];
+        for (let i = 0; i < filas; i++) {
+            for (let j = 0; j < columnas; j++) {
+                casilla = getCasilla(j,i);
+                if(casilla.tipo == 'mina')
+                    arrayMinas.push([j+"-"+i,casilla]);
+            }
+        }
+        return arrayMinas;
     }
 
     function descubrirRecursivo(x, y) {
@@ -206,11 +229,21 @@ let buscaminas = (function () {
     }
 
     function comprobarGanar() {
+        // if(CONDICION GANAR)
+        // partidaGanada = true;
 
     }
 
     function marcarCasilla(casilla) {
 
+    }
+
+    function isPartidaPerdida(){
+        return boolPartidaPerdida;
+    }
+
+    function isPartidaGanada() {
+        return boolPartidaGanada;
     }
 
     return {
@@ -219,7 +252,9 @@ let buscaminas = (function () {
         cambios: mostrarCambios,
         picar: picarCasilla,
         marcar: marcarCasilla,
-        casilla: getCasilla
+        casilla: getCasilla,
+        partidaPerdida: isPartidaPerdida,
+        partidaGanada: isPartidaGanada
 
         //despejar: despejarCasilla
     }

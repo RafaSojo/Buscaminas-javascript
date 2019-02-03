@@ -57,6 +57,12 @@
         buscaminas.picar(x,y);
 
         mostrarCambios();
+        console.log(buscaminas);
+
+        if(buscaminas.partidaPerdida())
+            perder();
+        if(buscaminas.partidaGanada())
+            ganar();
     }
 
     function colocarBandera(evento){
@@ -69,26 +75,29 @@
 
     function mostrarCambios(){
         let arrayCambios = buscaminas.cambios();
+        console.log(arrayCambios);
         for(let i=0;i<arrayCambios.length;i++){
             $casilla = $('#'+arrayCambios[i][0]);
             let casillaDatos = arrayCambios[i][1];
             $casilla.html(casillaDatos.valorMostrar);
 
-            if(casillaDatos.tipo === 'mina')
-                perder();
-
-
             $casilla.addClass('casillaDescubierta').effect( "bounce", "slow" );
+            if(casillaDatos.tipo === 'mina')
+                $casilla.addClass('mina');
             // console.log(arrayCambios[i][1]);
             // debugger;
         }
         
     }
 
+    function ganar(){
+
+    }
 
 
     function perder(){
         alert('has perdido');
+        mostrarCambios();
     }
 
 
