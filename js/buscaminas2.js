@@ -45,6 +45,11 @@ let buscaminas = (function () {
         arrayCambios = [];
     }
 
+    function comprobarPartidaTerminada(){
+        if(partidaTerminada)
+            throw new Error('La partida está acabada');
+    }
+
 
     /**
      * Asigna a cada casilla el valor según el número de minas que hay alrededor
@@ -149,6 +154,8 @@ let buscaminas = (function () {
     function picarCasilla(x, y) {
         try {
 
+            comprobarPartidaTerminada();
+
             let casilla = getCasilla(x, y);
             // picarCasilla(casilla,x,y);
 
@@ -160,7 +167,7 @@ let buscaminas = (function () {
             casilla.descubierto = true;
 
             // Añadimos la casilla al array de cambios
-            arrayCambios.push(x+"-"+y);
+            arrayCambios.push([x+"-"+y,casilla]);
             // arrayCambios = [];
             console.log('log picarCasilla '+arrayCambios);
 
@@ -180,7 +187,7 @@ let buscaminas = (function () {
     }
 
     function perder() {
-
+        partidaTerminada = true;
     }
 
     function descubrirRecursivo(x, y) {

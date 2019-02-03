@@ -32,7 +32,7 @@
             tableroArrayDom[i] = [];
             for(let x = 0;x<ancho;x++){
                 tableroArrayDom[i].push(
-                    $('<div class="casillaBuscamina" id="'+x+'-'+i+'">'+buscaminas.casilla(x,i).valorMostrar+'</div>')
+                    $('<div class="casillaBuscamina" id="'+x+'-'+i+'"></div>')
                     .click(picarCasilla)
                     .contextmenu(colocarBandera)
                     .data('x',x)
@@ -69,9 +69,26 @@
 
     function mostrarCambios(){
         let arrayCambios = buscaminas.cambios();
-        for(let i=0;i<arrayCambios.length;i++)
-            $('#'+arrayCambios[i]).addClass('casillaDescubierta');
+        for(let i=0;i<arrayCambios.length;i++){
+            $casilla = $('#'+arrayCambios[i][0]);
+            let casillaDatos = arrayCambios[i][1];
+            $casilla.html(casillaDatos.valorMostrar);
+
+            if(casillaDatos.tipo === 'mina')
+                perder();
+
+
+            $casilla.addClass('casillaDescubierta').effect( "bounce", "slow" );
+            // console.log(arrayCambios[i][1]);
+            // debugger;
+        }
         
+    }
+
+
+
+    function perder(){
+        alert('has perdido');
     }
 
 

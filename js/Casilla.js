@@ -14,7 +14,7 @@ function Casilla(tipo) {
 
     this.convertirMina = function () {
         this.tipo = 'mina';
-        this.valorMostrar = '💣';
+        this.valorMostrar = '9';
     };
 
     this.getValor = function () {
