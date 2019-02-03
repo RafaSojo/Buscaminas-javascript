@@ -21,15 +21,3 @@ Juega al buscaminas y analiza en qué consiste el juego:
 * Al iniciarse el juego aparece un contador con las minas del campo. Conforme se marca/desmarca una mina, el contador se actualiza.
 Aprende a jugar para implementarlo mediante JavaScript. 
 
-Sigue los siguientes pasos:
-
-1. Utilizando closures, créate un objeto Buscaminas al que puedas invocar los siguientes métodos (el resto quedará privado):
-    1. Buscaminas .init(): genera un campo de minas nuevo y lo muestra por consola. :heavy_check_mark:
-    2. Buscaminas .mostrar(): muestra el campo de minas por consola. :heavy_check_mark:
-    3. Buscaminas .picar(x, y): pica en la casilla (x, y) y muestra el campo de minas actualizado.  :heavy_check_mark:
-        1. En caso de picar una minas se indica que se ha perdido el juego.  :heavy_check_mark:
-        2. En caso de no quedar casillas por levantar se indica que se ha ganado el juego.
-    4. Buscaminas .marcar(x, y): marca con una bandera la casilla (x, y) y muestra el campo de minas actualizado. :heavy_check_mark:
-    5. Buscaminas .despejar(x, y): intenta destapar las casillas colindantes, sólo si el número de banderas se corresponden con las que indica la casilla. Entonces muestra el campo de minas actualizado. :heavy_check_mark:
-        1. En caso de estar las banderas equivocadas se indica que se ha perdido el juego. :heavy_check_mark:
-2. Después se generará el entorno gráfico. Pero eso no entra en esta entrega.
