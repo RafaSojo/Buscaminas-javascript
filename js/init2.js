@@ -4,6 +4,9 @@
 
     $(() => {
         $('#select-dificultad').change(iniciaJuego).change();
+
+        console.log('Para debug del buscaminas, llamar a buscaminas.debug()');
+        console.log('El caracter 9 es la mina');
     });
 
 

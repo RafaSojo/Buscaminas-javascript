@@ -225,6 +225,19 @@ let buscaminas = (function () {
         }
     }
 
+    function mostrarDebug() {
+        console.log('------- Buscaminas by Sojo -----------');
+        for (x = 0; x < filas; x++) {
+            linea = x + "-\t|";
+            for (y = 0; y < columnas; y++) {
+                let casilla = getCasilla(y, x);
+                linea += casilla.valorMostrar + " ";
+            }
+            linea += "| -" + x;
+            console.log(linea);
+        }
+    };
+
     function comprobarGanar() {
         // if(CONDICION GANAR)
         // partidaGanada = true;
@@ -261,7 +274,8 @@ let buscaminas = (function () {
         marcar: marcarCasilla,
         casilla: getCasilla,
         partidaPerdida: isPartidaPerdida,
-        partidaGanada: isPartidaGanada
+        partidaGanada: isPartidaGanada,
+        debug: mostrarDebug
 
         //despejar: despejarCasilla
     }

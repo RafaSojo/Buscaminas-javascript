@@ -17,6 +17,10 @@ function Casilla(tipo) {
         this.valorMostrar = '9';
     };
 
+    this.getImagen = function (){
+        return '';
+    }
+
     this.getValor = function () {
         if (this.descubierto == false && this.bandera == true)
             return '🚩';
