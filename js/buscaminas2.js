@@ -11,7 +11,7 @@ let buscaminas = (function () {
     let numeroMinas;
     let filas;
     let columnas;
-    let casillasRestantes;
+    // let casillasRestantes;
     let arrayCambios;
     let boolPartidaPerdida;
     let boolPartidaGanada;
@@ -72,23 +72,35 @@ let buscaminas = (function () {
                 let casilla = getCasilla(x, y);
                 if (casilla.tipo == 'mina')
                     continue;
-                let numeroMinas = 0;
+                let numeroMinasAlrededor = 0;
                 // Recorremos todas las casillas de alrededor y vemos si son minas para colocar el numero
                 for (let i = -1; i <= 1; i++) {
                     for (let j = -1; j <= 1; j++) {
                         try {
                             let casilla2 = tablero[(x + i)][(y + j)];
                             if (casilla2 != null && casilla2.tipo == 'mina' && casilla2 != undefined)
-                                numeroMinas++;
-                        } catch {
+                            numeroMinasAlrededor++;
+                        } catch(error) {
                             continue;
                         }
                     }
                 }
                 // console.log(numeroMinas);
-                casilla.valorMostrar = numeroMinas.toString();
+                casilla.valorMostrar = numeroMinasAlrededor.toString();
             }
         }
+    }
+
+    /**
+     * Devuelve el número de casillas sin descubrir
+     */
+    function getCasillasRestantes(){
+        let contador = 0;
+        for (let x = 0; x < filas; x++) 
+            for (let y = 0; y < columnas; y++) 
+                if(!getCasilla(x,y).descubierto)
+                    contador++;
+        return contador;
     }
 
     /**
@@ -197,13 +209,6 @@ let buscaminas = (function () {
 
     }
 
-    function perder() {
-        partidaTerminada = true;
-        boolPartidaPerdida = true;
-
-        arrayCambios = getMinas();
-
-    }
 
 
     function getMinas() {
@@ -218,7 +223,7 @@ let buscaminas = (function () {
                     let casilla = getCasilla((parseInt(x) + i), (parseInt(y) + j));
                     if (casilla != undefined && casilla.descubierto === false && casilla.deshabilitado == false)
                         picarCasilla((parseInt(x) + i), (parseInt(y) + j));
-                } catch {
+                } catch(error) {
                     continue;
                 }
             }
@@ -241,7 +246,30 @@ let buscaminas = (function () {
     function comprobarGanar() {
         // if(CONDICION GANAR)
         // partidaGanada = true;
+        // console.log(getCasillasRestantes());
+        // console.log(numeroMinas);
+        if(getCasillasRestantes() == numeroMinas)
+            ganar();
+    }
 
+    function perder() {
+        partidaTerminada = true;
+        boolPartidaPerdida = true;
+        arrayCambios = getMinas();
+    }
+
+
+    function ganar(){
+        // console.log('minas:');
+        // console.log(getMinas());
+        // console.log('Partida ganada!!');
+        boolPartidaGanada = true;
+        partidaTerminada = true;
+
+        // To-Do: optimizar:
+        getMinas().forEach(elemento => arrayCambios.push(elemento));
+
+        // arrayCambios.push(getMinas());
     }
 
     function marcarCasilla(x, y) {
