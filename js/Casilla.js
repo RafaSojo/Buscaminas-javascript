@@ -5,7 +5,6 @@
  */
 function Casilla(tipo) {
     this.tipo = tipo;
-    // this.valorMostrar = valorMostrar;
     this.bandera = false;
     this.descubierto = false;
     this.deshabilitado = false;
@@ -57,6 +56,7 @@ function Casilla(tipo) {
             this.bandera = false;
         else
             this.bandera = true;
+        return this.bandera;
     };
 
     // this.toString = function () {

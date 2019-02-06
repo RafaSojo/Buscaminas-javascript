@@ -11,14 +11,10 @@ let buscaminas = (function () {
     let numeroMinas;
     let filas;
     let columnas;
-    // let casillasRestantes;
     let arrayCambios;
     let boolPartidaPerdida;
     let boolPartidaGanada;
     let arrayMinas;
-    // let columnasCampoMinas;
-    // let filasCampoMinas;
-    // let arrayLevantadas;
 
     function init(dificultad = 1) {
         switch (dificultad) {
@@ -45,9 +41,6 @@ let buscaminas = (function () {
         crearTablero(filas, columnas);
         colocarMinas(numeroMinas);
         colocarNumeros();
-        //numLibres = numFilas * numComlumnas - numMinas;
-        //perdida = false;
-        //return campoMinas;
 
         boolPartidaPerdida = false;
         boolPartidaGanada = false;
@@ -177,11 +170,9 @@ let buscaminas = (function () {
     // Función cuando picas una casilla
     function picarCasilla(x, y) {
         try {
-
             comprobarPartidaTerminada();
 
             let casilla = getCasilla(x, y);
-            // picarCasilla(casilla,x,y);
 
             // Se comprueba si está deshabilitada o si está la bandera puesta
             if (casilla.deshabilitado === true || casilla.bandera === true || casilla.descubierto === true) {
@@ -208,8 +199,6 @@ let buscaminas = (function () {
         }
 
     }
-
-
 
     function getMinas() {
         return arrayMinas;
@@ -244,10 +233,6 @@ let buscaminas = (function () {
     };
 
     function comprobarGanar() {
-        // if(CONDICION GANAR)
-        // partidaGanada = true;
-        // console.log(getCasillasRestantes());
-        // console.log(numeroMinas);
         if(getCasillasRestantes() == numeroMinas)
             ganar();
     }
@@ -260,20 +245,19 @@ let buscaminas = (function () {
 
 
     function ganar(){
-        // console.log('minas:');
-        // console.log(getMinas());
-        // console.log('Partida ganada!!');
         boolPartidaGanada = true;
         partidaTerminada = true;
 
         // To-Do: optimizar:
         getMinas().forEach(elemento => arrayCambios.push(elemento));
-
-        // arrayCambios.push(getMinas());
     }
 
-    function marcarCasilla(x, y) {
-
+    function marcarCasilla(x,y) {
+        let casilla = getCasilla(x,y);
+        if (casilla.deshabilitado === true || casilla.descubierto === true)
+            throw new Error('La casilla está deshabilitada, marcada o ya descubierta.');
+        
+        return casilla.setBandera();
     }
 
     function isPartidaPerdida() {
@@ -292,18 +276,23 @@ let buscaminas = (function () {
         return columnas;
     }
 
+    function getNumeroMinas(){
+        return numeroMinas;
+    }
+
     return {
         init: init,
         filas: getFilas,
         columnas: getColumnas,
-        // mostrar: mostrarTableroJuego,
         cambios: mostrarCambios,
         picar: picarCasilla,
         marcar: marcarCasilla,
         casilla: getCasilla,
         partidaPerdida: isPartidaPerdida,
         partidaGanada: isPartidaGanada,
-        debug: mostrarDebug
+        mostrar: mostrarDebug,
+
+        nMinas: getNumeroMinas
 
         //despejar: despejarCasilla
     }

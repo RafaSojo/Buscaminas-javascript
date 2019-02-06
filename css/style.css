@@ -33,7 +33,6 @@ p {
     padding: 5px 15px;
     top: 0.25px;
     align-items: center;
-    /* border-bottom: 1px solid black; */
     z-index: 99;
 }
 
@@ -84,8 +83,6 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* align-self: stretch; */
-    /*  Tamaño Casilla  */
     height: 40px;
     width: 40px;
 }
@@ -141,12 +138,6 @@ p {
     background-color: brown;
 }
 
-/* Para cambiar el color alternativamente */
-
-/* .casillaBuscamina:nth-child(even){
-    background-color: #555555;
-} */
-
 .verCodigo {
     text-align: center;
 }
@@ -168,14 +159,6 @@ main>h1 {
 .minaGanada {
     background-color: green;
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -217,7 +200,7 @@ main>h1 {
   100%{opacity: 0;margin-top: 40%;}
 }
 body, html, root, document{
-  display: block
+  display: block;
   height: 500px;
 }
  .popUpFundo{
@@ -286,7 +269,7 @@ body, html, root, document{
     width: 100%;
     padding: 5%;
     text-align: center;
-    vertical-align: middle;
+    /* vertical-align: middle; */
     border-width: 1px;
     border-color: #ccc;
     border-style: none none solid none;
