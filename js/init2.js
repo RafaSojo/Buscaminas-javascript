@@ -125,7 +125,6 @@
             if (casillaDatos.tipo === 'mina')
                 $casilla.addClass('mina');
         }
-
     }
 
     function ganar() {
@@ -133,16 +132,18 @@
 
         mostrarCambios();
         $('.mina').addClass('minaGanada');
+
+        // Desactivamos el tablero //#endregion
+        $('.casillaBuscamina').unbind('mousedown');
         pararReloj();
     }
-
 
     function perder() {
         // Mostramos mensaje de perder
         janelaPopUp.abre("2", 'p red', '¡Has perdido!', 'Oohh, has tocado una mina y has perdido', undefined, iniciaJuego, 'Cerrar', 'Jugar de nuevo');
 
         // Desactivamos el tablero
-        $('.casillaBuscamina').unbind('click').unbind('contextmenu');
+        $('.casillaBuscamina').unbind('mousedown');
 
         // Mostramos las minas
         mostrarCambios();
