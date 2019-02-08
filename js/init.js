@@ -23,6 +23,8 @@
 
         iniciarTablero();
         banderasColocadas = 0;
+        $('#numBanderas').text(banderasColocadas);
+        // console.log('banderas a 0');
         $('#banderasTotales').text(buscaminas.nMinas());
 
     }
@@ -103,7 +105,6 @@
         } catch (error) {
             muestraMensajeError(error);
         }
-
     }
 
     function handlerClick(e) {
@@ -134,7 +135,7 @@
 
     function mostrarCambios() {
         let arrayCambios = buscaminas.cambios();
-        console.log(arrayCambios);
+        // console.log(arrayCambios);
         for (let i = 0; i < arrayCambios.length; i++) {
             $casilla = $('#' + arrayCambios[i][0]);
             let casillaDatos = arrayCambios[i][1];

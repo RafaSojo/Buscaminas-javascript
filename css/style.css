@@ -214,7 +214,7 @@ body, html, root, document{
     padding: 0;
     background-color:#4879c3;
     opacity: 0.8;
-    z-index: 50;
+    z-index: 100;
 }
 .popUp{
     box-sizing: border-box;
@@ -516,33 +516,3 @@ body, html, root, document{
 }
 
 
-/*
-That part is just for the form
-*/
-.colorfulForm{
-  width: 350px;
-  margin: 60px auto;
-}
-.colorfulForm input, .colorfulForm textarea, .colorfulForm select{
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  width: 350px;
-  padding: 5px;
-  background-color: #f3f3f3;
-  border: 1px solid #ccc;
-  border-radius: 2px; 
-}
-
-.colorfulForm label{
-  display: block;
-  font-family: Verdana, Arial;
-  margin: 10px 0 5px 0;
-}
-.colorfulForm button{
-  width: 100px;
-  margin: 3px 7px;
-  padding: 5px;
-  color: #fff;
-  border-style: none;
-}

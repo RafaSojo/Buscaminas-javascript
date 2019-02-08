@@ -263,7 +263,7 @@ let buscaminas = (function () {
     function despejarCasilla(x, y){
         let casilla = getCasilla(x, y);
         if (casilla.descubierto === false || casilla.bandera === true) {
-            console.log(casilla);
+            // console.log(casilla);
             console.error('La casilla tiene no está descubierta o tiene una bandera.');
             return;
         }
@@ -320,9 +320,7 @@ let buscaminas = (function () {
         partidaPerdida: isPartidaPerdida,
         partidaGanada: isPartidaGanada,
         mostrar: mostrarDebug,
-
         nMinas: getNumeroMinas,
-
         despejar: despejarCasilla
     }
 })();
