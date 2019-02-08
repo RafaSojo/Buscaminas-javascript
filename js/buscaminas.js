@@ -252,7 +252,7 @@ let buscaminas = (function () {
                     // let casilla = tablero[(x + i)][(y + j)];
                     if (casilla != null && casilla.bandera === true && casilla != undefined)
                         numeroBanderas++;
-                } catch {
+                } catch(error) {
                     continue;
                 }
             }

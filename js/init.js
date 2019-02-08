@@ -16,15 +16,20 @@
 
     function iniciaJuego() {
         activarReloj();
+        let dificultad;
 
-        let dificultad = this.value;
+        // Para comprobar cuando se inicia desde la alerta cuando pierdes
+        if (this == window)
+            dificultad = $('#select-dificultad').val();
+        else
+            dificultad = this.value;
+
         buscaminas.init(dificultad);
         $tableroDom = $('#tableroJuego');
 
         iniciarTablero();
         banderasColocadas = 0;
         $('#numBanderas').text(banderasColocadas);
-        // console.log('banderas a 0');
         $('#banderasTotales').text(buscaminas.nMinas());
 
     }
@@ -58,16 +63,16 @@
         let y = $casilla.data('y');
         let x = $casilla.data('x');
         try {
-            if(buscaminas.despejar(x,y))
-            mostrarCambios();
-        else
-            muestraMensajeError('Hay que despejar las casillas.');
+            if (buscaminas.despejar(x, y))
+                mostrarCambios();
+            else
+                muestraMensajeError('Hay que despejar las casillas.');
         } catch (error) {
             muestraMensajeError(error);
         }
 
         comprobarPerderGanar();
-        
+
 
     }
 
@@ -75,15 +80,12 @@
     function picarCasilla($casilla) {
         let y = $casilla.data('y');
         let x = $casilla.data('x');
-
         buscaminas.picar(x, y);
-
         mostrarCambios();
-
         comprobarPerderGanar();
     }
 
-    function comprobarPerderGanar(){
+    function comprobarPerderGanar() {
         if (buscaminas.partidaPerdida())
             perder();
         else if (buscaminas.partidaGanada())
@@ -93,7 +95,6 @@
     function colocarBandera($casilla) {
         let y = $casilla.data('y');
         let x = $casilla.data('x');
-
         try {
             if (buscaminas.marcar(x, y)) {
                 $casilla.addClass('casillaMarcada');
@@ -109,23 +110,19 @@
 
     function handlerClick(e) {
         e.preventDefault();
-
         $casilla = $(this);
-
         switch (e.buttons) {
             case 1:
-              picarCasilla($casilla);
-              break;
+                picarCasilla($casilla);
+                break;
             case 2:
-              colocarBandera($casilla);
-              break;
+                colocarBandera($casilla);
+                break;
             case 3:
             case 4:
                 despejar($casilla);
                 break;
-          }
-
-
+        }
     }
 
     function sumarBandera(cantidad) {
@@ -135,12 +132,10 @@
 
     function mostrarCambios() {
         let arrayCambios = buscaminas.cambios();
-        // console.log(arrayCambios);
         for (let i = 0; i < arrayCambios.length; i++) {
             $casilla = $('#' + arrayCambios[i][0]);
             let casillaDatos = arrayCambios[i][1];
             $casilla.html(casillaDatos.valorMostrar);
-
             $casilla.addClass('casillaDescubierta').effect("bounce", "slow");
             if (casillaDatos.tipo === 'mina')
                 $casilla.addClass('mina');
@@ -150,12 +145,11 @@
     async function ganar() {
         await sleep(800);
 
-        janelaPopUp.abre("2", 'p green', '¡Has ganado!', 'Enhorabuena, has ganado la partida en '+$('#minutos').text()+' minutos y '+$('#segundos').text()+' segundos.', undefined, undefined, 'Cerrar', 'Jugar de nuevo');
+        janelaPopUp.abre("2", 'p green', '¡Has ganado!', 'Enhorabuena, has ganado la partida en ' + $('#minutos').text() + ' minutos y ' + $('#segundos').text() + ' segundos.', undefined, iniciaJuego, 'Cerrar', 'Jugar de nuevo');
 
         mostrarCambios();
         $('.mina').addClass('minaGanada');
 
-        // Desactivamos el tablero //#endregion
         $('.casillaBuscamina').unbind('mousedown');
         pararReloj();
     }
@@ -178,10 +172,9 @@
 
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
-      }
+    }
 
     function activarReloj() {
-
         // Se resetean antes de nada para un efecto visual bonito
         $spanMinutos.text('00');
         $spanSegundos.text('00');
@@ -216,8 +209,8 @@
 }
 
 
-function muestraMensajeError(mensaje){
-        console.error(mensaje);
+function muestraMensajeError(mensaje) {
+    console.error(mensaje);
 }
 
 
