@@ -72,8 +72,6 @@
         }
 
         comprobarPerderGanar();
-
-
     }
 
 
@@ -133,13 +131,22 @@
     function mostrarCambios() {
         let arrayCambios = buscaminas.cambios();
         for (let i = 0; i < arrayCambios.length; i++) {
+            // [x,y] = arrayCambios[i][0].split('-');
+            // console.log(x);
+            // console.log(y);
+
             $casilla = $('#' + arrayCambios[i][0]);
+            // $casilla = $(tableroArrayDom[y][x]);
             let casillaDatos = arrayCambios[i][1];
             $casilla.html(casillaDatos.valorMostrar);
-            $casilla.addClass('casillaDescubierta').effect("bounce", "slow");
-            if (casillaDatos.tipo === 'mina')
-                $casilla.addClass('mina');
+            $casilla.addClass('casillaDescubierta');
+            $casilla.animate({'background-color':'white'}, 1000);
+            if (casillaDatos.tipo === 'mina'){
+
+            $casilla.animate({'background-color':'red'}, 500);
+            $casilla.addClass('mina');
         }
+    }
     }
 
     async function ganar() {
