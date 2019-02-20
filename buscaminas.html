@@ -39,7 +39,11 @@
             <header>
                 <div class="tiempo"><span id="tiempoTranscurrido"><span id="minutos">00</span>:<span id="segundos">00</span></span>
                     <i class="fas fa-clock"></i></div>
-                <div class="banderas"><span id="numBanderas">0</span> / <span id="banderasTotales"></span> <span><i class="fas fa-flag"></i></span></div>
+                <div class="banderas">
+                    <p>
+                    <span id="numBanderas">0</span> / <span id="banderasTotales"></span> <span><i class="fas fa-flag"></i></span>
+                </p>
+            </div>
                 <div class="dificultad">
                     <select name="dificultad" id="select-dificultad">
                         <option value="1">Fácil</option>
@@ -47,10 +51,12 @@
                         <option value="3">Difícil</option>
                     </select>
                 </div>
+                <div class="reiniciar">
+                        <i class="fas fa-undo-alt"></i>
+                </div>
             </header>
             <div class="tableroJuego Tablero" id="tableroJuego"></div>
         </div>
-        <div class="Reinicia"><i class="fas fa-undo-alt"></i></div>
     </main>
 </body>
 

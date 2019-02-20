@@ -1,25 +1,27 @@
 {
     let tableroArrayDom;
-    let $tableroDom, $spanMinutos, $spanSegundos;
+    let $tableroDom, $spanMinutos, $spanSegundos, $spanBanderas;
     let intervalReloj, banderasColocadas;
-
+    let dificultad, primeraPartida, contadorAnimaciones;
+    primeraPartida = true;
 
     $(() => {
         $spanMinutos = $("#minutos");
         $spanSegundos = $("#segundos");
+        $spanBanderas = $('#numBanderas');
 
         $('#select-dificultad').change(iniciaJuego).change();
         console.log('Para debug del buscaminas, llamar a buscaminas.mostrar()');
         $('body').contextmenu(e => e.preventDefault());
+        $('.reiniciar').click(iniciaJuego);
     });
 
 
     function iniciaJuego() {
         activarReloj();
-        let dificultad;
 
         // Para comprobar cuando se inicia desde la alerta cuando pierdes
-        if (this == window)
+        if (this == window || $(this).hasClass('reiniciar'))
             dificultad = $('#select-dificultad').val();
         else
             dificultad = this.value;
@@ -29,8 +31,14 @@
 
         iniciarTablero();
         banderasColocadas = 0;
-        $('#numBanderas').text(banderasColocadas);
+        $spanBanderas.text(banderasColocadas);
         $('#banderasTotales').text(buscaminas.nMinas());
+
+        if(!primeraPartida)
+        $('#tableroJuego').fadeOut(500, function (){
+            $(this).fadeIn(500);
+        });
+        primeraPartida = false;
 
     }
 
@@ -39,6 +47,14 @@
         let alto = buscaminas.filas();
         let ancho = buscaminas.columnas();
 
+        let tipoJuego;
+        if(dificultad == 1)
+            tipoJuego = 'juegoPequenio';
+        else if(dificultad == 2)
+            tipoJuego = 'juegoMediano';
+        else
+            tipoJuego = 'juegoGrande';
+
         tableroArrayDom = new Array(alto);
 
         let divContenedor = $('<div></div>');
@@ -46,7 +62,7 @@
             tableroArrayDom[i] = [];
             for (let x = 0; x < ancho; x++) {
                 tableroArrayDom[i].push(
-                    $('<div class="casillaBuscamina" id="' + x + '-' + i + '"></div>')
+                    $('<div class="casillaBuscamina '+tipoJuego+'" id="' + x + '-' + i + '"></div>')
                     .on('mousedown', handlerClick)
                     .data('x', x)
                     .data('y', i)
@@ -101,6 +117,7 @@
                 $casilla.removeClass('casillaMarcada');
                 sumarBandera(-1);
             }
+            // $spanBanderas.effect("bounce", "swing", 1000);
         } catch (error) {
             muestraMensajeError(error);
         }
@@ -130,6 +147,7 @@
 
     function mostrarCambios() {
         let arrayCambios = buscaminas.cambios();
+        contadorAnimaciones = 300;
         for (let i = 0; i < arrayCambios.length; i++) {
             // [x,y] = arrayCambios[i][0].split('-');
             // console.log(x);
@@ -138,15 +156,22 @@
             $casilla = $('#' + arrayCambios[i][0]);
             // $casilla = $(tableroArrayDom[y][x]);
             let casillaDatos = arrayCambios[i][1];
-            $casilla.html(casillaDatos.valorMostrar);
-            $casilla.addClass('casillaDescubierta');
-            $casilla.animate({'background-color':'white'}, 1000);
-            if (casillaDatos.tipo === 'mina'){
+            // console.log(arrayCambios[i][1].valorMostrar);
+            $casilla.html((casillaDatos.valorMostrar == '0') ? '' : casillaDatos.valorMostrar);
+            $casilla.addClass('casillaDescubierta', contadorAnimaciones);
+            // $casilla.animate({
+            //     'background-color': 'white'
+            // }, 1000);
 
-            $casilla.animate({'background-color':'red'}, 500);
-            $casilla.addClass('mina');
+            if (casillaDatos.tipo === 'mina') {
+                // $casilla.animate({
+                //     'background-color': 'red'
+                // }, 500);
+                $casilla.addClass('mina', contadorAnimaciones);
+            }
+
+            contadorAnimaciones += 20;
         }
-    }
     }
 
     async function ganar() {
@@ -162,7 +187,7 @@
     }
 
     async function perder() {
-        await sleep(800);
+        await sleep(contadorAnimaciones + 1000);
 
         // Mostramos mensaje de perder
         janelaPopUp.abre("2", 'p red', '¡Has perdido!', 'Oohh, has tocado una mina y has perdido', undefined, iniciaJuego, 'Cerrar', 'Jugar de nuevo');
