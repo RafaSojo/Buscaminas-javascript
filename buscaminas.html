@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta author="Rafael Sojo">
     <title>Buscaminas jQuery by Rafa Sojo</title>
-    
+
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -39,12 +39,13 @@
             <header>
                 <div class="tiempo"><span id="tiempoTranscurrido"><span id="minutos">00</span>:<span id="segundos">00</span></span>
                     <i class="fas fa-clock"></i></div>
-                <div class="banderas">
-                    <p>
-                    <span id="numBanderas">0</span> / <span id="banderasTotales"></span> <span><i class="fas fa-flag"></i></span>
-                </p>
-            </div>
-                <div class="dificultad">
+                <div class="banderas" style="margin-right: 0px">
+                    <span id="numBanderas">0</span>
+                </div>
+                <div class="banderas" style="margin-left: 0px;">
+                    <span>/</span> <span id="banderasTotales"></span> <span><i class="fas fa-flag"></i></span>
+                </div>
+                <div class="dificultad" >
                     <select name="dificultad" id="select-dificultad">
                         <option value="1">Fácil</option>
                         <option value="2">Medio</option>
@@ -52,7 +53,7 @@
                     </select>
                 </div>
                 <div class="reiniciar">
-                        <i class="fas fa-undo-alt"></i>
+                    <i class="fas fa-undo-alt"></i>
                 </div>
             </header>
             <div class="tableroJuego Tablero" id="tableroJuego"></div>

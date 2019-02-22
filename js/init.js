@@ -117,7 +117,7 @@
                 $casilla.removeClass('casillaMarcada');
                 sumarBandera(-1);
             }
-            // $spanBanderas.effect("bounce", "swing", 1000);
+            $spanBanderas.effect("bounce", "swing", 500);
         } catch (error) {
             muestraMensajeError(error);
         }
