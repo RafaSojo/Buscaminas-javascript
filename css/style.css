@@ -4,6 +4,10 @@ p {
     text-align: center;
 }
 
+body{
+    background: linear-gradient(90deg, #00ffd0 10%, #c5ffa0 90%);
+}
+
 * {
     font-family: 'Roboto', sans-serif;
 }
@@ -77,7 +81,7 @@ p {
 }
 
 .casillaBuscamina {
-    background: #7e7e7e;
+    background: #179fff;
     border: 1px solid white;
     text-align: center;
     display: flex;

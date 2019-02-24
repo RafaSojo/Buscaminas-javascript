@@ -260,18 +260,37 @@ let buscaminas = (function () {
         return numeroBanderas;
     }
 
+    function getCasillaSinDespejarAlrededor(x,y){
+        let arrayCasillas = [];
+        for (let i = -1; i <= 1; i++) {
+            for (let j = -1; j <= 1; j++) {
+                try {
+                    let casilla = getCasilla((parseInt(x) + i), (parseInt(y) + j));
+                    if (casilla != undefined && casilla.descubierto === false && casilla.deshabilitado == false && casilla.bandera == false)
+                        arrayCasillas.push({'x':(parseInt(x) + i), 'y':(parseInt(y) + j)}); //,'casilla':casilla
+                } catch(error) {
+                    continue;
+                }
+            }
+        }
+        return arrayCasillas;
+    }
+
     function despejarCasilla(x, y){
         let casilla = getCasilla(x, y);
         if (casilla.descubierto === false || casilla.bandera === true) {
             // console.log(casilla);
-            console.error('La casilla tiene no está descubierta o tiene una bandera.');
+            console.error('La casilla no está descubierta o tiene una bandera.');
             return;
         }
         let numeroBanderasAlrededor = getNumeroBanderasAlrededor(x, y);
         if (casilla.valorMostrar == numeroBanderasAlrededor)
             descubrirRecursivo(x, y);
-        else
-            throw new Error('No coincide el número de banderas con el número de minas alrededor.');
+        else{
+            let error = new Error('No coincide el número de banderas con el número de minas alrededor.');
+            error.casillas = getCasillaSinDespejarAlrededor(x,y);
+            throw error;
+        }
     }
 
     function ganar(){

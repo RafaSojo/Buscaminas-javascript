@@ -34,10 +34,10 @@
         $spanBanderas.text(banderasColocadas);
         $('#banderasTotales').text(buscaminas.nMinas());
 
-        if(!primeraPartida)
-        $('#tableroJuego').fadeOut(500, function (){
-            $(this).fadeIn(500);
-        });
+        if (!primeraPartida)
+            $('#tableroJuego').fadeOut(500, function () {
+                $(this).fadeIn(500);
+            });
         primeraPartida = false;
 
     }
@@ -46,11 +46,11 @@
     function iniciarTablero() {
         let alto = buscaminas.filas();
         let ancho = buscaminas.columnas();
-
         let tipoJuego;
-        if(dificultad == 1)
+
+        if (dificultad == 1)
             tipoJuego = 'juegoPequenio';
-        else if(dificultad == 2)
+        else if (dificultad == 2)
             tipoJuego = 'juegoMediano';
         else
             tipoJuego = 'juegoGrande';
@@ -62,7 +62,7 @@
             tableroArrayDom[i] = [];
             for (let x = 0; x < ancho; x++) {
                 tableroArrayDom[i].push(
-                    $('<div class="casillaBuscamina '+tipoJuego+'" id="' + x + '-' + i + '"></div>')
+                    $('<div class="casillaBuscamina ' + tipoJuego + '" id="' + x + '-' + i + '"></div>')
                     .on('mousedown', handlerClick)
                     .data('x', x)
                     .data('y', i)
@@ -75,21 +75,31 @@
     }
 
     function despejar($casilla) {
-        // console.log(this);
         let y = $casilla.data('y');
         let x = $casilla.data('x');
         try {
             if (buscaminas.despejar(x, y))
                 mostrarCambios();
             else
-                muestraMensajeError('Hay que despejar las casillas.');
+                muestraMensajeError('Hay que despejar las casillas.XX'); // -> Cuando no está despejada la casilla
         } catch (error) {
-            muestraMensajeError(error);
+            parpadeaCasillas(error.casillas);
+            muestraMensajeError(error + 'xx2'); // -> Cuando no concide el número de banderas y el numero de la casilla
         }
 
         comprobarPerderGanar();
     }
 
+    function parpadeaCasillas(casillas) {
+        console.log(casillas);
+        casillas.forEach(element => {
+            $casilla = $('#' + element.x + '-' + element.y)
+                .fadeOut(100)
+                .fadeIn(100)
+                .fadeOut(100)
+                .fadeIn(100);
+        });
+    }
 
     function picarCasilla($casilla) {
         let y = $casilla.data('y');
@@ -127,15 +137,15 @@
         e.preventDefault();
         $casilla = $(this);
         switch (e.buttons) {
-            case 1:
-                picarCasilla($casilla);
+            case 3:
+            case 4:
+                despejar($casilla);
                 break;
             case 2:
                 colocarBandera($casilla);
                 break;
-            case 3:
-            case 4:
-                despejar($casilla);
+            case 1:
+                picarCasilla($casilla);
                 break;
         }
     }
@@ -149,28 +159,17 @@
         let arrayCambios = buscaminas.cambios();
         contadorAnimaciones = 300;
         for (let i = 0; i < arrayCambios.length; i++) {
-            // [x,y] = arrayCambios[i][0].split('-');
-            // console.log(x);
-            // console.log(y);
-
             $casilla = $('#' + arrayCambios[i][0]);
-            // $casilla = $(tableroArrayDom[y][x]);
             let casillaDatos = arrayCambios[i][1];
-            // console.log(arrayCambios[i][1].valorMostrar);
             $casilla.html((casillaDatos.valorMostrar == '0') ? '' : casillaDatos.valorMostrar);
             $casilla.addClass('casillaDescubierta', contadorAnimaciones);
-            // $casilla.animate({
-            //     'background-color': 'white'
-            // }, 1000);
 
-            if (casillaDatos.tipo === 'mina') {
-                // $casilla.animate({
-                //     'background-color': 'red'
-                // }, 500);
+            if (casillaDatos.tipo === 'mina')
                 $casilla.addClass('mina', contadorAnimaciones);
-            }
 
-            contadorAnimaciones += 20;
+            // Para evitar que la animación tarde más de 2 segundos
+            if (contadorAnimaciones < 2000)
+                contadorAnimaciones += 20;
         }
     }
 
@@ -239,7 +238,6 @@
     }
 
 }
-
 
 function muestraMensajeError(mensaje) {
     console.error(mensaje);
