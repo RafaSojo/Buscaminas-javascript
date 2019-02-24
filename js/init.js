@@ -164,9 +164,10 @@
             $casilla.html((casillaDatos.valorMostrar == '0') ? '' : casillaDatos.valorMostrar);
             $casilla.addClass('casillaDescubierta', contadorAnimaciones);
 
-            if (casillaDatos.tipo === 'mina')
+            if (casillaDatos.tipo === 'mina') {
                 $casilla.addClass('mina', contadorAnimaciones);
-
+                $('#' + arrayCambios[i][0] + '>span').toggle("explode", 2000);
+            }
             // Para evitar que la animación tarde más de 2 segundos
             if (contadorAnimaciones < 2000)
                 contadorAnimaciones += 20;
@@ -197,6 +198,7 @@
         // Mostramos las minas
         mostrarCambios();
         pararReloj();
+
     }
 
 
@@ -241,6 +243,7 @@
 
 function muestraMensajeError(mensaje) {
     console.error(mensaje);
+    // M.toast({html: mensaje})
 }
 
 

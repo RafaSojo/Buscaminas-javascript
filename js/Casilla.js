@@ -13,7 +13,7 @@ function Casilla(tipo) {
 
     this.convertirMina = function () {
         this.tipo = 'mina';
-        this.valorMostrar = '💣';
+        this.valorMostrar = '<span>💣</span>';
     };
 
     this.getImagen = function (){
@@ -46,7 +46,7 @@ function Casilla(tipo) {
         else if (this.valorMostrar == '9')
             return '9️⃣';
         else if (this.tipo == 'mina')
-            return '💣';
+            return '<span>💣</span>';
         else
             return valorMostrar;
     };
