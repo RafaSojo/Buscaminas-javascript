@@ -77,19 +77,18 @@
     function despejar($casilla) {
         let y = $casilla.data('y');
         let x = $casilla.data('x');
+
         try {
             buscaminas.despejar(x, y);
-            mostrarCambios();
+            if (comprobarPerderGanar())
+                mostrarCambios();
         } catch (error) {
             parpadeaCasillas(error.casillas);
-            muestraMensajeError(error + 'xx2'); // -> Cuando no concide el número de banderas y el numero de la casilla
+            muestraMensajeError(error); // -> Cuando no concide el número de banderas y el numero de la casilla
         }
-
-        comprobarPerderGanar();
     }
 
     function parpadeaCasillas(casillas) {
-        // console.log(casillas);
         casillas.forEach(element => {
             $casilla = $('#' + element.x + '-' + element.y)
                 .fadeOut(100)
@@ -120,8 +119,10 @@
     }
 
     function colocarBandera($casilla) {
+
         let y = $casilla.data('y');
         let x = $casilla.data('x');
+
         try {
             if (buscaminas.marcar(x, y)) {
                 $casilla.addClass('casillaMarcada');
@@ -139,8 +140,6 @@
     function handlerClick(e) {
         e.preventDefault();
         $casilla = $(this);
-        // console.log('----------------------------');
-        console.log('e.buttons: ' + e.buttons);
         switch (e.buttons) {
             case 3:
             case 4:
@@ -181,8 +180,6 @@
 
     function mostrarCambiosPerder() {
         let arrayCambios = buscaminas.cambios();
-        // console.log(arrayCambios);
-        // $.holdReady(true);
         contadorAnimaciones = 500;
         for (let i = 0; i < arrayCambios.length; i++) {
             $casilla = $('#' + arrayCambios[i][0]);
@@ -198,7 +195,6 @@
             if (contadorAnimaciones < 2500)
                 contadorAnimaciones += 300;
         }
-        // $.holdReady(false);
 
     }
 

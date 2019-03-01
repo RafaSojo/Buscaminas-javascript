@@ -15,6 +15,7 @@ let buscaminas = (function () {
     let boolPartidaPerdida;
     let boolPartidaGanada;
     let arrayMinas;
+    let banderasColocadas;
 
     function init(dificultad = 1) {
         switch (dificultad) {
@@ -47,6 +48,7 @@ let buscaminas = (function () {
 
         partidaTerminada = false;
         arrayCambios = [];
+        banderasColocadas = 0;
     }
 
     function comprobarPartidaTerminada() {
@@ -72,8 +74,8 @@ let buscaminas = (function () {
                         try {
                             let casilla2 = tablero[(x + i)][(y + j)];
                             if (casilla2 != null && casilla2.tipo == 'mina' && casilla2 != undefined)
-                            numeroMinasAlrededor++;
-                        } catch(error) {
+                                numeroMinasAlrededor++;
+                        } catch (error) {
                             continue;
                         }
                     }
@@ -87,11 +89,11 @@ let buscaminas = (function () {
     /**
      * Devuelve el número de casillas sin descubrir
      */
-    function getCasillasRestantes(){
+    function getCasillasRestantes() {
         let contador = 0;
-        for (let x = 0; x < filas; x++) 
-            for (let y = 0; y < columnas; y++) 
-                if(!getCasilla(x,y).descubierto)
+        for (let x = 0; x < filas; x++)
+            for (let y = 0; y < columnas; y++)
+                if (!getCasilla(x, y).descubierto)
                     contador++;
         return contador;
     }
@@ -171,19 +173,12 @@ let buscaminas = (function () {
     function picarCasilla(x, y, recursivo = false) {
         try {
             comprobarPartidaTerminada();
-
             let casilla = getCasilla(x, y);
-
-            // Se comprueba si está deshabilitada o si está la bandera puesta
-            if (casilla.deshabilitado === true || casilla.bandera === true || casilla.descubierto === true) 
+            if (casilla.deshabilitado === true || casilla.bandera === true || casilla.descubierto === true)
                 return;
-            
+
             casilla.descubierto = true;
-
-            // Añadimos la casilla al array de cambios
             arrayCambios.push([x + "-" + y, casilla]);
-            // console.log('log picarCasilla ' + arrayCambios);
-
 
             // Si has tocado una mina, pierdes
             if (casilla.tipo === 'mina')
@@ -211,7 +206,7 @@ let buscaminas = (function () {
                     let casilla = getCasilla((parseInt(x) + i), (parseInt(y) + j));
                     if (casilla != undefined && casilla.descubierto === false && casilla.deshabilitado == false)
                         picarCasilla((parseInt(x) + i), (parseInt(y) + j));
-                } catch(error) {
+                } catch (error) {
                     continue;
                 }
             }
@@ -232,7 +227,7 @@ let buscaminas = (function () {
     };
 
     function comprobarGanar() {
-        if(getCasillasRestantes() == numeroMinas)
+        if (getCasillasRestantes() == numeroMinas)
             ganar();
     }
 
@@ -242,16 +237,15 @@ let buscaminas = (function () {
         arrayCambios = getMinas();
     }
 
-    function getNumeroBanderasAlrededor(x, y){
+    function getNumeroBanderasAlrededor(x, y) {
         let numeroBanderas = 0;
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
                 try {
-                    let casilla = getCasilla((x+i),(y+j));
-                    // let casilla = tablero[(x + i)][(y + j)];
+                    let casilla = getCasilla((x + i), (y + j));
                     if (casilla != null && casilla.bandera === true && casilla != undefined)
                         numeroBanderas++;
-                } catch(error) {
+                } catch (error) {
                     continue;
                 }
             }
@@ -259,15 +253,18 @@ let buscaminas = (function () {
         return numeroBanderas;
     }
 
-    function getCasillaSinDespejarAlrededor(x,y){
+    function getCasillaSinDespejarAlrededor(x, y) {
         let arrayCasillas = [];
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
                 try {
                     let casilla = getCasilla((parseInt(x) + i), (parseInt(y) + j));
                     if (casilla != undefined && casilla.descubierto === false && casilla.deshabilitado == false && casilla.bandera == false)
-                        arrayCasillas.push({'x':(parseInt(x) + i), 'y':(parseInt(y) + j)}); //,'casilla':casilla
-                } catch(error) {
+                        arrayCasillas.push({
+                            'x': (parseInt(x) + i),
+                            'y': (parseInt(y) + j)
+                        }); //,'casilla':casilla
+                } catch (error) {
                     continue;
                 }
             }
@@ -275,7 +272,7 @@ let buscaminas = (function () {
         return arrayCasillas;
     }
 
-    function despejarCasilla(x, y){
+    function despejarCasilla(x, y) {
         let casilla = getCasilla(x, y);
         if (casilla.descubierto === false || casilla.bandera === true) {
             // console.log(casilla);
@@ -285,14 +282,14 @@ let buscaminas = (function () {
         let numeroBanderasAlrededor = getNumeroBanderasAlrededor(x, y);
         if (casilla.valorMostrar == numeroBanderasAlrededor)
             descubrirRecursivo(x, y);
-        else{
+        else {
             let error = new Error('No coincide el número de banderas con el número de minas alrededor.');
-            error.casillas = getCasillaSinDespejarAlrededor(x,y);
+            error.casillas = getCasillaSinDespejarAlrededor(x, y);
             throw error;
         }
     }
 
-    function ganar(){
+    function ganar() {
         boolPartidaGanada = true;
         partidaTerminada = true;
 
@@ -300,11 +297,25 @@ let buscaminas = (function () {
         getMinas().forEach(elemento => arrayCambios.push(elemento));
     }
 
-    function marcarCasilla(x,y) {
-        let casilla = getCasilla(x,y);
+    function marcarCasilla(x, y) {
+        let casilla = getCasilla(x, y);
         if (casilla.deshabilitado === true || casilla.descubierto === true)
             throw new Error('La casilla está deshabilitada, marcada o ya descubierta.');
-        return casilla.setBandera();
+
+
+        let boolBandera = casilla.setBandera();
+
+        if (boolBandera) {
+            if (banderasColocadas >= buscaminas.nMinas()){
+                casilla.setBandera(); // Volvemos la bandera al estado anterior
+                throw new Error('Ya has colocado el número máximo de banderas');
+            }
+            banderasColocadas++;
+
+        } else
+            banderasColocadas--;
+
+        return boolBandera;
     }
 
     function isPartidaPerdida() {
@@ -315,15 +326,15 @@ let buscaminas = (function () {
         return boolPartidaGanada;
     }
 
-    function getFilas(){
+    function getFilas() {
         return filas;
     }
 
-    function getColumnas(){
+    function getColumnas() {
         return columnas;
     }
 
-    function getNumeroMinas(){
+    function getNumeroMinas() {
         return numeroMinas;
     }
 
