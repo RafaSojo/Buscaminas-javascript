@@ -168,17 +168,16 @@ let buscaminas = (function () {
     }
 
     // Función cuando picas una casilla
-    function picarCasilla(x, y) {
+    function picarCasilla(x, y, recursivo = false) {
         try {
             comprobarPartidaTerminada();
 
             let casilla = getCasilla(x, y);
 
             // Se comprueba si está deshabilitada o si está la bandera puesta
-            if (casilla.deshabilitado === true || casilla.bandera === true || casilla.descubierto === true) {
-                console.error('La casilla está deshabilitada, marcada o ya descubierta.');
+            if (casilla.deshabilitado === true || casilla.bandera === true || casilla.descubierto === true) 
                 return;
-            }
+            
             casilla.descubierto = true;
 
             // Añadimos la casilla al array de cambios

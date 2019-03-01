@@ -78,10 +78,8 @@
         let y = $casilla.data('y');
         let x = $casilla.data('x');
         try {
-            if (buscaminas.despejar(x, y))
-                mostrarCambios();
-            else
-                muestraMensajeError('Hay que despejar las casillas.XX'); // -> Cuando no está despejada la casilla
+            buscaminas.despejar(x, y);
+            mostrarCambios();
         } catch (error) {
             parpadeaCasillas(error.casillas);
             muestraMensajeError(error + 'xx2'); // -> Cuando no concide el número de banderas y el numero de la casilla
@@ -91,7 +89,7 @@
     }
 
     function parpadeaCasillas(casillas) {
-        console.log(casillas);
+        // console.log(casillas);
         casillas.forEach(element => {
             $casilla = $('#' + element.x + '-' + element.y)
                 .fadeOut(100)
@@ -105,15 +103,20 @@
         let y = $casilla.data('y');
         let x = $casilla.data('x');
         buscaminas.picar(x, y);
-        mostrarCambios();
-        comprobarPerderGanar();
+        if (comprobarPerderGanar())
+            mostrarCambios();
     }
 
     function comprobarPerderGanar() {
-        if (buscaminas.partidaPerdida())
+        if (buscaminas.partidaPerdida()) {
             perder();
-        else if (buscaminas.partidaGanada())
+            return false;
+        } else if (buscaminas.partidaGanada()) {
             ganar();
+            return false;
+        }
+
+        return true;
     }
 
     function colocarBandera($casilla) {
@@ -136,6 +139,8 @@
     function handlerClick(e) {
         e.preventDefault();
         $casilla = $(this);
+        // console.log('----------------------------');
+        console.log('e.buttons: ' + e.buttons);
         switch (e.buttons) {
             case 3:
             case 4:
@@ -164,14 +169,37 @@
             $casilla.html((casillaDatos.valorMostrar == '0') ? '' : casillaDatos.valorMostrar);
             $casilla.addClass('casillaDescubierta', contadorAnimaciones);
 
-            if (casillaDatos.tipo === 'mina') {
-                $casilla.addClass('mina', contadorAnimaciones);
-                $('#' + arrayCambios[i][0] + '>span').toggle("explode", 2000);
-            }
+            if (casillaDatos.tipo == 'mina')
+                $casilla.addClass('mina');
+
             // Para evitar que la animación tarde más de 2 segundos
             if (contadorAnimaciones < 2000)
                 contadorAnimaciones += 20;
         }
+    }
+
+
+    function mostrarCambiosPerder() {
+        let arrayCambios = buscaminas.cambios();
+        // console.log(arrayCambios);
+        // $.holdReady(true);
+        contadorAnimaciones = 500;
+        for (let i = 0; i < arrayCambios.length; i++) {
+            $casilla = $('#' + arrayCambios[i][0]);
+            let casillaDatos = arrayCambios[i][1];
+            $casilla.html((casillaDatos.valorMostrar == '0') ? '' : casillaDatos.valorMostrar);
+            $casilla.addClass('casillaDescubierta', contadorAnimaciones)
+                .addClass('mina', contadorAnimaciones);
+            $('span', $casilla)
+                .animate({
+                    'font-size': '3em'
+                }, contadorAnimaciones)
+                .fadeOut(contadorAnimaciones + 300);
+            if (contadorAnimaciones < 2500)
+                contadorAnimaciones += 300;
+        }
+        // $.holdReady(false);
+
     }
 
     async function ganar() {
@@ -187,21 +215,17 @@
     }
 
     async function perder() {
-        await sleep(contadorAnimaciones + 1000);
-
-        // Mostramos mensaje de perder
-        janelaPopUp.abre("2", 'p red', '¡Has perdido!', 'Oohh, has tocado una mina y has perdido', undefined, iniciaJuego, 'Cerrar', 'Jugar de nuevo');
-
         // Desactivamos el tablero
         $('.casillaBuscamina').unbind('mousedown');
-
+        $('.reiniciar').unbind('click');
         // Mostramos las minas
-        mostrarCambios();
+        mostrarCambiosPerder();
         pararReloj();
 
+        await sleep(contadorAnimaciones + 1500);
+        $('.reiniciar').click(iniciaJuego);
+        janelaPopUp.abre("2", 'p red', '¡Has perdido!', 'Oohh, has tocado una mina y has perdido', undefined, iniciaJuego, 'Cerrar', 'Jugar de nuevo');
     }
-
-
 
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -242,6 +266,7 @@
 }
 
 function muestraMensajeError(mensaje) {
+    console.log('Mensaje error:');
     console.error(mensaje);
     // M.toast({html: mensaje})
 }
@@ -339,10 +364,3 @@ $("button").on("click", function () {
     var myText = $("#myText").val();
     janelaPopUp.abre("asdf", $("#size").val() + " " + $(this).html() + ' ' + $("#mode").val(), $("#title").val(), myText)
 });
-
-
-
-// function(id, classes, titulo, corpo, functionCancelar, functionEnviar, textoCancelar, textoEnviar){
-
-// janelaPopUp.abre( "2", 'p red',  '¡Has perdido!' ,  'Oohh, has tocado una mina y has perdido',undefined,undefined,'Cerrar','Jugar de nuevo');
-// setTimeout(function(){janelaPopUp.fecha('example');}, 2000);
