@@ -82,6 +82,9 @@
             buscaminas.despejar(x, y);
             if (comprobarPerderGanar())
                 mostrarCambios();
+            let audio = new Audio();
+            audio.src = './sounds/picar.mp3';
+            audio.play();
         } catch (error) {
             parpadeaCasillas(error.casillas);
             muestraMensajeError(error); // -> Cuando no concide el número de banderas y el numero de la casilla
@@ -104,6 +107,9 @@
         buscaminas.picar(x, y);
         if (comprobarPerderGanar())
             mostrarCambios();
+        let audio = new Audio();
+        audio.src = './sounds/picar.mp3';
+        audio.play();
     }
 
     function comprobarPerderGanar() {
@@ -132,6 +138,9 @@
                 sumarBandera(-1);
             }
             $spanBanderas.effect("bounce", "swing", 500);
+            let audio = new Audio();
+            audio.src = './sounds/destapar.mp3';
+            audio.play();
         } catch (error) {
             muestraMensajeError(error);
         }
@@ -262,8 +271,14 @@
 }
 
 function muestraMensajeError(mensaje) {
-    console.log('Mensaje error:');
-    console.error(mensaje);
+    Toastify({
+        text: mensaje,
+        duration: 3000
+    }).showToast();
+
+
+    // console.log('Mensaje error:');
+    // console.error(mensaje);
     // M.toast({html: mensaje})
 }
 
