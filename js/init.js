@@ -188,6 +188,9 @@
 
 
     function mostrarCambiosPerder() {
+        let audio = new Audio();
+        audio.src = './sounds/mina.mp3';
+        audio.play();
         let arrayCambios = buscaminas.cambios();
         contadorAnimaciones = 500;
         for (let i = 0; i < arrayCambios.length; i++) {
