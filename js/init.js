@@ -82,9 +82,6 @@
             buscaminas.despejar(x, y);
             if (comprobarPerderGanar())
                 mostrarCambios();
-            let audio = new Audio();
-            audio.src = './sounds/picar.mp3';
-            audio.play();
         } catch (error) {
             parpadeaCasillas(error.casillas);
             muestraMensajeError(error); // -> Cuando no concide el número de banderas y el numero de la casilla
@@ -107,9 +104,6 @@
         buscaminas.picar(x, y);
         if (comprobarPerderGanar())
             mostrarCambios();
-        let audio = new Audio();
-        audio.src = './sounds/picar.mp3';
-        audio.play();
     }
 
     function comprobarPerderGanar() {
@@ -171,6 +165,14 @@
     function mostrarCambios() {
         let arrayCambios = buscaminas.cambios();
         contadorAnimaciones = 300;
+
+        if(arrayCambios.length > 0){
+            let audio = new Audio();
+            audio.src = './sounds/picar.mp3';
+            audio.play();
+        }
+
+
         for (let i = 0; i < arrayCambios.length; i++) {
             $casilla = $('#' + arrayCambios[i][0]);
             let casillaDatos = arrayCambios[i][1];
@@ -211,6 +213,9 @@
     }
 
     async function ganar() {
+        let audio = new Audio();
+        audio.src = './sounds/ganar.mp3';
+        audio.play();
         await sleep(800);
 
         janelaPopUp.abre("2", 'p green', '¡Has ganado!', 'Enhorabuena, has ganado la partida en ' + $('#minutos').text() + ' minutos y ' + $('#segundos').text() + ' segundos.', undefined, iniciaJuego, 'Cerrar', 'Jugar de nuevo');
