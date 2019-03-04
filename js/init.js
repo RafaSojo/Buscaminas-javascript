@@ -90,11 +90,7 @@
 
     function parpadeaCasillas(casillas) {
         casillas.forEach(element => {
-            $casilla = $('#' + element.x + '-' + element.y)
-                .fadeOut(100)
-                .fadeIn(100)
-                .fadeOut(100)
-                .fadeIn(100);
+            $casilla = $('#' + element.x + '-' + element.y).effect('pulsate', {'times':3} ,500);
         });
     }
 
@@ -223,14 +219,14 @@
         mostrarCambios();
         $('.mina').addClass('minaGanada');
 
-        $('.casillaBuscamina').unbind('mousedown');
+        $('.casillaBuscamina').off('mousedown');
         pararReloj();
     }
 
     async function perder() {
         // Desactivamos el tablero
-        $('.casillaBuscamina').unbind('mousedown');
-        $('.reiniciar').unbind('click');
+        $('.casillaBuscamina').off('mousedown');
+        $('.reiniciar').off('click');
         // Mostramos las minas
         mostrarCambiosPerder();
         pararReloj();
@@ -283,13 +279,7 @@ function muestraMensajeError(mensaje) {
         text: mensaje,
         duration: 3000
     }).showToast();
-
-
-    // console.log('Mensaje error:');
-    // console.error(mensaje);
-    // M.toast({html: mensaje})
 }
-
 
 
 
