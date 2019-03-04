@@ -52,19 +52,7 @@ function Casilla(tipo) {
     };
 
     this.setBandera = function () {
-        if (this.bandera)
-            this.bandera = false;
-        else
-            this.bandera = true;
-        return this.bandera;
+        return this.bandera = !this.bandera;
     };
 
-    // this.toString = function () {
-    //     return this.tipo;
-    // } 0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣#️⃣💣🚩
-}
-
-
-Casilla.prototype.toString = function () {
-    return this.tipo;
 }
