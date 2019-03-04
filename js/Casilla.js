@@ -16,39 +16,38 @@ function Casilla(tipo) {
         this.valorMostrar = '<span>💣</span>';
     };
 
-    this.getImagen = function (){
+    this.getImagen = function () {
         return '';
     }
 
     this.getValor = function () {
         if (this.descubierto == false && this.bandera == true)
             return '🚩';
-        else if (this.descubierto == false)
+        if (this.descubierto == false)
             return '⬛';
-        else if (this.valorMostrar == '0')
+        if (this.valorMostrar == '0')
             return '0️⃣';
-        else if (this.valorMostrar == '1')
+        if (this.valorMostrar == '1')
             return '1️⃣';
-        else if (this.valorMostrar == '2')
+        if (this.valorMostrar == '2')
             return '2️⃣';
-        else if (this.valorMostrar == '3')
+        if (this.valorMostrar == '3')
             return '3️⃣';
-        else if (this.valorMostrar == '4')
+        if (this.valorMostrar == '4')
             return '4️⃣';
-        else if (this.valorMostrar == '5')
+        if (this.valorMostrar == '5')
             return '5️⃣';
-        else if (this.valorMostrar == '6')
+        if (this.valorMostrar == '6')
             return '6️⃣';
-        else if (this.valorMostrar == '7')
+        if (this.valorMostrar == '7')
             return '7️⃣';
-        else if (this.valorMostrar == '8')
+        if (this.valorMostrar == '8')
             return '8️⃣';
-        else if (this.valorMostrar == '9')
+        if (this.valorMostrar == '9')
             return '9️⃣';
-        else if (this.tipo == 'mina')
+        if (this.tipo == 'mina')
             return '<span>💣</span>';
-        else
-            return valorMostrar;
+        return valorMostrar;
     };
 
     this.setBandera = function () {
