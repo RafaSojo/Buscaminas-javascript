@@ -27,10 +27,10 @@ Aprende a jugar para implementarlo mediante JavaScript.
 ## Animaciones
 
 ### Click
-Pendiente documentar.
+Cuando se hace un click (o doble) y se despeja una casilla, lo que hace es un effecto de *puff* y en el callback cuando termina se hace un *fadeIn* y se escribe el valor correspondiente.
 ```javascript
-$casilla.effect('puff', {}, contadorAnimaciones, function () {
-                    $(this).fadeIn(300).html((casillaDatos.valorMostrar == '0') ? '' : casillaDatos.valorMostrar);    
+$casilla.addClass('casillaDescubierta').effect('puff', {}, contadorAnimaciones, function () {
+                $(this).fadeIn(300).html((casillaDatos.valorMostrar == '0') ? '' : casillaDatos.valorMostrar);
             });
 ```
 
@@ -54,10 +54,14 @@ function parpadeaCasillas(casillas) {
 ```
 
 ### Ganar
-Pendiente documentar.
+Cuando se gana, simplemente se añade la clase de mina ganada antes de mostrar el diálogo.
+```javascript
+ $('.mina').addClass('minaGanada', 400);
+```
 
 ### Perder
-Pendiente documentar.
+Cuando se pierde se añade la clase *casillaDescubierta* y *mina*, ambas con un contador incremental para el tiempo.
+Además, dentro de la mina hay un span el cual tiene un *animate* que le aumenta el tamaño y después de lo que tarda más 300 milisegundos desaparece.
 ```javascript
 $casilla.addClass('casillaDescubierta', contadorAnimaciones)
     .addClass('mina', contadorAnimaciones);
@@ -68,3 +72,8 @@ $('span', $casilla)
     .fadeOut(contadorAnimaciones + 300);
 ```
 
+Además, la función de perder tiene el sync-await para retrasar la ejecución para que cuando salte el diálogo de acabar la partida los efectos estén prácticamente terminados.
+
+```javascript
+await sleep(contadorAnimaciones + 1500);
+```

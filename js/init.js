@@ -163,7 +163,7 @@
 
     function mostrarCambios() {
         let arrayCambios = buscaminas.cambios();
-        contadorAnimaciones = 300;
+        contadorAnimaciones = 150;
 
         if (arrayCambios.length > 0) {
             let audio = new Audio();
@@ -175,109 +175,111 @@
         for (let i = 0; i < arrayCambios.length; i++) {
             $casilla = $('#' + arrayCambios[i][0]);
             let casillaDatos = arrayCambios[i][1];
-            $casilla.addClass('casillaDescubierta');
+
+            $casilla.addClass('casillaDescubierta').effect('puff', {}, contadorAnimaciones, function () {
+                $(this).fadeIn(200).html((casillaDatos.valorMostrar == '0') ? '' : casillaDatos.valorMostrar);
+            });
 
             if (casillaDatos.tipo == 'mina')
                 $casilla.addClass('mina');
 
-            $casilla.effect('puff', {}, contadorAnimaciones, function () {
-                    $(this).fadeIn(300).html((casillaDatos.valorMostrar == '0') ? '' : casillaDatos.valorMostrar);    
-            });
-
-        // Para evitar que la animación tarde más de 2 segundos
-        if (contadorAnimaciones < 2000)
-            contadorAnimaciones += 20;
-    }
-}
-
-
-
-function mostrarCambiosPerder() {
-    let audio = new Audio();
-    audio.src = './sounds/mina.mp3';
-    audio.play();
-    let arrayCambios = buscaminas.cambios();
-    contadorAnimaciones = 500;
-    for (let i = 0; i < arrayCambios.length; i++) {
-        $casilla = $('#' + arrayCambios[i][0]);
-        let casillaDatos = arrayCambios[i][1];
-        $casilla.html((casillaDatos.valorMostrar == '0') ? '' : casillaDatos.valorMostrar);
-        $casilla.addClass('casillaDescubierta', contadorAnimaciones)
-            .addClass('mina', contadorAnimaciones);
-        $('span', $casilla)
-            .animate({
-                'font-size': '3em'
-            }, contadorAnimaciones)
-            .fadeOut(contadorAnimaciones + 300);
-        if (contadorAnimaciones < 2500)
-            contadorAnimaciones += 300;
+            // Para evitar que la animación tarde más de 2 segundos
+            if (contadorAnimaciones < 2000)
+                contadorAnimaciones += 20;
+        }
     }
 
-}
 
-async function ganar() {
-    let audio = new Audio();
-    audio.src = './sounds/ganar.mp3';
-    audio.play();
-    await sleep(800);
 
-    janelaPopUp.abre("2", 'p green', '¡Has ganado!', 'Enhorabuena, has ganado la partida en ' + $('#minutos').text() + ' minutos y ' + $('#segundos').text() + ' segundos.', undefined, iniciaJuego, 'Cerrar', 'Jugar de nuevo');
-
-    mostrarCambios();
-    $('.mina').addClass('minaGanada');
-
-    $('.casillaBuscamina').off('mousedown');
-    pararReloj();
-}
-
-async function perder() {
-    // Desactivamos el tablero
-    $('.casillaBuscamina').off('mousedown');
-    $('.reiniciar').off('click');
-    // Mostramos las minas
-    mostrarCambiosPerder();
-    pararReloj();
-
-    await sleep(contadorAnimaciones + 1500);
-    $('.reiniciar').click(iniciaJuego);
-    janelaPopUp.abre("2", 'p red', '¡Has perdido!', 'Oohh, has tocado una mina y has perdido', undefined, iniciaJuego, 'Cerrar', 'Jugar de nuevo');
-}
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function activarReloj() {
-    // Se resetean antes de nada para un efecto visual bonito
-    $spanMinutos.text('00');
-    $spanSegundos.text('00');
-    let tiempo = {
-        hora: 0,
-        minuto: 0,
-        segundo: 0
-    };
-
-    pararReloj();
-
-    intervalReloj = setInterval(function () {
-        tiempo.segundo++;
-        if (tiempo.segundo >= 60) {
-            tiempo.segundo = 0;
-            tiempo.minuto++;
+    function mostrarCambiosPerder() {
+        let audio = new Audio();
+        audio.src = './sounds/mina.mp3';
+        audio.play();
+        let arrayCambios = buscaminas.cambios();
+        contadorAnimaciones = 500;
+        for (let i = 0; i < arrayCambios.length; i++) {
+            $casilla = $('#' + arrayCambios[i][0]);
+            let casillaDatos = arrayCambios[i][1];
+            $casilla.html((casillaDatos.valorMostrar == '0') ? '' : casillaDatos.valorMostrar);
+            $casilla.addClass('casillaDescubierta', contadorAnimaciones)
+                .addClass('mina', contadorAnimaciones);
+            $('span', $casilla)
+                .animate({
+                    'font-size': '3em'
+                }, contadorAnimaciones)
+                .fadeOut(contadorAnimaciones + 300);
+            if (contadorAnimaciones < 2500)
+                contadorAnimaciones += 300;
         }
-        if (tiempo.minuto >= 60) {
-            tiempo.minuto = 0;
-            tiempo.hora++;
-        }
-        $spanMinutos.text(tiempo.minuto < 10 ? '0' + tiempo.minuto : tiempo.minuto);
-        $spanSegundos.text(tiempo.segundo < 10 ? '0' + tiempo.segundo : tiempo.segundo);
-    }, 1000);
-}
+
+    }
+
+    async function ganar() {
 
 
-function pararReloj() {
-    clearInterval(intervalReloj);
-}
+        let audio = new Audio();
+        audio.src = './sounds/ganar.mp3';
+        audio.play();
+        mostrarCambios();
+        $('.mina').addClass('minaGanada', 400);
+
+        $('.casillaBuscamina').off('mousedown');
+        pararReloj();
+        await sleep(1500);
+
+        janelaPopUp.abre("2", 'p green', '¡Has ganado!', 'Enhorabuena, has ganado la partida en ' + $('#minutos').text() + ' minutos y ' + $('#segundos').text() + ' segundos.', undefined, iniciaJuego, 'Cerrar', 'Jugar de nuevo');
+
+
+    }
+
+    async function perder() {
+        // Desactivamos el tablero
+        $('.casillaBuscamina').off('mousedown');
+        $('.reiniciar').off('click');
+        // Mostramos las minas
+        mostrarCambiosPerder();
+        pararReloj();
+
+        await sleep(contadorAnimaciones + 1500);
+        $('.reiniciar').click(iniciaJuego);
+        janelaPopUp.abre("2", 'p red', '¡Has perdido!', 'Oohh, has tocado una mina y has perdido', undefined, iniciaJuego, 'Cerrar', 'Jugar de nuevo');
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function activarReloj() {
+        // Se resetean antes de nada para un efecto visual bonito
+        $spanMinutos.text('00');
+        $spanSegundos.text('00');
+        let tiempo = {
+            hora: 0,
+            minuto: 0,
+            segundo: 0
+        };
+
+        pararReloj();
+
+        intervalReloj = setInterval(function () {
+            tiempo.segundo++;
+            if (tiempo.segundo >= 60) {
+                tiempo.segundo = 0;
+                tiempo.minuto++;
+            }
+            if (tiempo.minuto >= 60) {
+                tiempo.minuto = 0;
+                tiempo.hora++;
+            }
+            $spanMinutos.text(tiempo.minuto < 10 ? '0' + tiempo.minuto : tiempo.minuto);
+            $spanSegundos.text(tiempo.segundo < 10 ? '0' + tiempo.segundo : tiempo.segundo);
+        }, 1000);
+    }
+
+
+    function pararReloj() {
+        clearInterval(intervalReloj);
+    }
 
 }
 
