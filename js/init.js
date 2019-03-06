@@ -176,12 +176,20 @@
             $casilla = $('#' + arrayCambios[i][0]);
             let casillaDatos = arrayCambios[i][1];
 
-            $casilla.addClass('casillaDescubierta').effect('puff', {}, contadorAnimaciones, function () {
-                $(this).fadeIn(200).html((casillaDatos.valorMostrar == '0') ? '' : casillaDatos.valorMostrar);
-            });
+
+
+
 
             if (casillaDatos.tipo == 'mina')
-                $casilla.addClass('mina');
+                $casilla.addClass('casillaDescubierta').effect('shake', {}, contadorAnimaciones + 1000, function () {
+                    $(this).fadeIn(1000).html(casillaDatos.valorMostrar).addClass('mina').addClass('minaGanada');
+                });
+            else
+                $casilla.addClass('casillaDescubierta').effect('puff', {}, contadorAnimaciones, function () {
+                    $(this).fadeIn(200).html((casillaDatos.valorMostrar == '0') ? '' : casillaDatos.valorMostrar);
+                });
+
+
 
             // Para evitar que la animación tarde más de 2 segundos
             if (contadorAnimaciones < 2000)
@@ -221,11 +229,13 @@
         audio.src = './sounds/ganar.mp3';
         audio.play();
         mostrarCambios();
-        $('.mina').addClass('minaGanada', 400);
+        // await sleep(contadorAnimaciones);
+
+        // $('.mina').addClass('minaGanada', contadorAnimaciones);
 
         $('.casillaBuscamina').off('mousedown');
         pararReloj();
-        await sleep(1500);
+        await sleep(contadorAnimaciones + 1000);
 
         janelaPopUp.abre("2", 'p green', '¡Has ganado!', 'Enhorabuena, has ganado la partida en ' + $('#minutos').text() + ' minutos y ' + $('#segundos').text() + ' segundos.', undefined, iniciaJuego, 'Cerrar', 'Jugar de nuevo');
 

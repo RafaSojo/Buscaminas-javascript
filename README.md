@@ -54,9 +54,11 @@ function parpadeaCasillas(casillas) {
 ```
 
 ### Ganar
-Cuando se gana, simplemente se añade la clase de mina ganada antes de mostrar el diálogo.
+La estructura de los efectos es muy parecida a cuando se despejan casillas pero el efecto que se usa es el *shake* con 1 segundo de más de retardo igual que el fadeIn.
 ```javascript
- $('.mina').addClass('minaGanada', 400);
+$casilla.addClass('casillaDescubierta').effect('shake', {}, contadorAnimaciones + 1000, function () {
+     $(this).fadeIn(1000).html(casillaDatos.valorMostrar).addClass('mina').addClass('minaGanada');
+});
 ```
 
 ### Perder

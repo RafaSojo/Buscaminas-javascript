@@ -61,7 +61,6 @@ let buscaminas = (function () {
      * Asigna a cada casilla el valor según el número de minas que hay alrededor
      */
     function colocarNumeros() {
-        // console.log('entra colocar numeros');
         for (let x = 0; x < filas; x++) {
             for (let y = 0; y < columnas; y++) {
                 let casilla = getCasilla(x, y);
@@ -80,7 +79,6 @@ let buscaminas = (function () {
                         }
                     }
                 }
-                // console.log(numeroMinas);
                 casilla.valorMostrar = numeroMinasAlrededor.toString();
             }
         }
@@ -199,7 +197,6 @@ let buscaminas = (function () {
     }
 
     function descubrirRecursivo(x, y) {
-        // console.log('Recursivo de -> x:' + x + ' - y:' + y);
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
                 try {
@@ -275,8 +272,7 @@ let buscaminas = (function () {
     function despejarCasilla(x, y) {
         let casilla = getCasilla(x, y);
         if (casilla.descubierto === false || casilla.bandera === true) {
-            // console.log(casilla);
-            console.error('La casilla no está descubierta o tiene una bandera.');
+            // console.error('La casilla no está descubierta o tiene una bandera.');
             return;
         }
         let numeroBanderasAlrededor = getNumeroBanderasAlrededor(x, y);
