@@ -108,7 +108,7 @@
         if (buscaminas.partidaPerdida()) {
             perder();
             return false;
-        } else if (buscaminas.partidaGanada()) {
+        } if (buscaminas.partidaGanada()) {
             ganar();
             return false;
         }
