@@ -1,9 +1,3 @@
-// Función para generar int aleatorio entre dos valores
-// Fuente -> https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Math/random
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
 let buscaminas = (function () {
 
     let tablero;
@@ -149,8 +143,8 @@ let buscaminas = (function () {
      * Devuelve una casilla aleatoria del tablero;
      */
     function getCasillaAleatoria() {
-        let x = getRandomInt(0, filas);
-        let y = getRandomInt(0, columnas);
+        let x = Math.floor(Math.random() * filas) + 0;
+        let y = Math.floor(Math.random() * columnas) + 0;
         return [tablero[x][y], x, y];
     }
 
@@ -302,7 +296,7 @@ let buscaminas = (function () {
         let boolBandera = casilla.setBandera();
 
         if (boolBandera) {
-            if (banderasColocadas >= buscaminas.nMinas()){
+            if (banderasColocadas >= buscaminas.nMinas()) {
                 casilla.setBandera(); // Volvemos la bandera al estado anterior
                 throw new Error('Ya has colocado el número máximo de banderas');
             }
