@@ -63,7 +63,19 @@
             for (let x = 0; x < ancho; x++) {
                 tableroArrayDom[i].push(
                     $('<div class="casillaBuscamina ' + tipoJuego + '" id="' + x + '-' + i + '"></div>')
-                    .on('mousedown', handlerClick)
+                    .click(function (e) {
+                        // Click izquierdo
+                        if (e.buttons === 2)
+                            return;
+                        picarCasilla($(this));
+                    })
+                    .on('mousedown', function (e) {
+                        let boton = e.buttons;
+                        if (boton === 3) // Ambos botones
+                            despejar($(this));
+                        else if (boton === 2) // Click derecho
+                            colocarBandera($(this));
+                    })
                     .data('x', x)
                     .data('y', i)
                 );
@@ -108,7 +120,8 @@
         if (buscaminas.partidaPerdida()) {
             perder();
             return false;
-        } if (buscaminas.partidaGanada()) {
+        }
+        if (buscaminas.partidaGanada()) {
             ganar();
             return false;
         }
@@ -139,22 +152,7 @@
         }
     }
 
-    function handlerClick(e) {
-        e.preventDefault();
-        $casilla = $(this);
-        switch (e.buttons) {
-            case 3:
-            case 4:
-                despejar($casilla);
-                break;
-            case 2:
-                colocarBandera($casilla);
-                break;
-            case 1:
-                picarCasilla($casilla);
-                break;
-        }
-    }
+
 
     function sumarBandera(cantidad) {
         banderasColocadas += cantidad;
@@ -229,10 +227,6 @@
         audio.src = './sounds/ganar.mp3';
         audio.play();
         mostrarCambios();
-        // await sleep(contadorAnimaciones);
-
-        // $('.mina').addClass('minaGanada', contadorAnimaciones);
-
         $('.casillaBuscamina').off('mousedown');
         pararReloj();
         await sleep(contadorAnimaciones + 1000);
